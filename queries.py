@@ -330,6 +330,24 @@ def future_reservations_by_admin(admin, date):
 def drop_table(table):
     with create_connection(db) as c:
         c.execute(f"drop table if exists {table}")
+        
+def search_hotel(hotelname, hoteltype, costmin, costmax):
+    with create_connection(db) as c:
+        c.execute(f"""
+        select * 
+        from room
+        join location
+        on room.locationid = location.id
+        join hotel
+        on location.hotelid = hotel.id
+        where hotel.name = '{hotelname}'
+        and hotel.type = '{hoteltype}'
+        and room.price >= '{costmin}'
+        and room.price <= '{costmax}'
+        """)
+        data = c.fetchall()
+    return data
+
 
 def initialize_dummy_data():
     hotelid = 0
@@ -345,6 +363,8 @@ def initialize_dummy_data():
         c.execute(f"insert into location(hotelid, name, i,j) values ('{hotelid}','{location2}','{i2}','{j2}')")
 
 
+
+
 if __name__ == '__main__':
     # create_db_and_tables()
     # initialize_dummy_data()
@@ -357,4 +377,6 @@ if __name__ == '__main__':
     # print(select_all_locations())
     # print(select_all_rooms())
     # print(select_all_rooms_by_chain(1))
-    create_db_and_tables()
+    # create_db_and_tables()
+    # print(select_all_rooms_by_chain(1))
+    pass

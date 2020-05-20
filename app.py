@@ -12,6 +12,42 @@ app.secret_key = "hello"
 def tiara():
     return render_template("Hotel.htm")
 
+@app.route("/Details")
+def details():
+    return render_template("Details.html")
+
+@app.route("/ReservationDetails")
+def reservationdetails():
+    # if "user" in session:
+    #     username = session["user"]
+    #     data = select_reservations_by_custid(session["userid"])
+    return render_template("ReservationDetails.html")
+    return render_template("Details.html")
+
+@app.route("/welcome")
+def welcome():
+    return render_template("welcome.html")
+
+@app.route("/search", methods=["GET","POST"])
+def search():
+    if request.method == "POST":
+        hotelname = request.form["hotels"]
+        hoteltype = request.form["hoteltype"]
+        costmin = request.form["costmin"]
+        costmax = request.form["costmax"]
+        return json.dumps(search_hotel(hotelname, hoteltype, costmin, costmax))
+    return render_template("search.html")
+
+
+
+@app.route("/AccountDetails")
+def accountdetails():
+    # if "user" in session:
+    #     username = session["user"]
+    #     data = select_user_id_by_name(session["userid"])
+    return render_template("AccountDetails.html")
+    return render_template("Details.html")
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
