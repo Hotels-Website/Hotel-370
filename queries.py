@@ -117,14 +117,14 @@ def insert_new_rooms(rooms):
         for locid, rn, size, price in rooms:
             c.execute(f"insert into room (locationid,roomnumber,size,price) values ({locid},{rn},{size},{price})")
 
-def updated_insert_new_rooms(rooms):
+def updated_insert_new_room(locid, rt, price):
     with create_connection(db) as c:
-        c.execute(f"insert into room (locationid,type,price) values ({locid},{rt},{price})")
+        c.execute(f"insert into room values (null, '{locid}','{rt}','{price}')")
 
 
 #SELECT
 def select_all_locations():
-    with create_connection(db) as c:
+    with create_connection(db) as c: 
         c.execute(
             """select b.name, a.name, a.i, a.j
             from location as a
@@ -281,7 +281,7 @@ def select_rooms_search_criteria():
 def current_reservations_by_admin(admin, date):
     with create_connection(db) as c:
         c.execute(f"""
-            select customer.firstname, customer.lastname, reservation.startdate, reservation.enddate, room.roomnumber
+            select customer.firstname, customer.lastname, reservation.startdate, reservation.enddate, room.id
             from reservation
             inner join customer on customer.id = reservation.custid
             inner join room on reservation.roomid = room.id
@@ -310,6 +310,24 @@ def future_reservations_by_admin(admin, date):
 def drop_table(table):
     with create_connection(db) as c:
         c.execute(f"drop table if exists {table}")
+        
+def search_hotel(hotelname, hoteltype, costmin, costmax):
+    with create_connection(db) as c:
+        c.execute(f"""
+        select * 
+        from room
+        join location
+        on room.locationid = location.id
+        join hotel
+        on location.hotelid = hotel.id
+        where hotel.name = '{hotelname}'
+        and hotel.type = '{hoteltype}'
+        and room.price >= '{costmin}'
+        and room.price <= '{costmax}'
+        """)
+        data = c.fetchall()
+    return data
+
 
 def initialize_dummy_data():
     hotelid = 0
@@ -325,6 +343,8 @@ def initialize_dummy_data():
         c.execute(f"insert into location(hotelid, name, i,j) values ('{hotelid}','{location2}','{i2}','{j2}')")
 
 
+
+
 if __name__ == '__main__':
     # create_db_and_tables()
     # initialize_dummy_data()
@@ -337,4 +357,6 @@ if __name__ == '__main__':
     # print(select_all_locations())
     # print(select_all_rooms())
     # print(select_all_rooms_by_chain(1))
-    create_db_and_tables()
+    # create_db_and_tables()
+    # print(select_all_rooms_by_chain(1))
+    pass

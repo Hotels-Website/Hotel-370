@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+{% block content %}
+<style>
+  .column{
+    margin-left: 15px;
+  }
+</style>
+
+<div class="header">
+  <h1>Welcome!</h1>
+</div>
+
+<div class="row">
+  <div class="column">
+    <h2>First Franchise</h2>
+      <p>
+    <a href="hoteltest.html">
+      
+<img border="0" alt="W3Schools" src="{{url_for('static', filename='choice1.jpg')}}" width="300" height="300">
+          </a></p>
+  </div>
+  
+  <div class="column">
+    <h2>Second Franchise</h2>
+        <p>
+    <a href="hoteltest.html">
+      <img border="0" alt="W3Schools" src="{{url_for('static', filename='choice2.jpg')}}" width="300" height="300">
+          </a></p>
+  </div>
+  
+  <div class="column">
+    <h2>Third Franchise</h2>
+        <p>
+    <a href="hoteltest.html">
+      <img border="0" alt="W3Schools" src="{{url_for('static', filename='choice3.jpg')}}" width="300" height="300">
+          </a></p>
+  </div>
+</div>
+
+<h2>Press to Enter The Date</h2>
+    <div class="button big"><button class="open-button" onclick="openForm()">Enter Todays Date</button></div>
+
+<div class="form-popup" id="myForm">
+  <form action="/action_page.php" class="form-container">
+      <center><h2>Please Enter Dates</h2></center>
+
+    <label for="start">Todays Date</label>
+    <input type="startdate" placeholder="Enter Todays Date" name="start" required>
+        
+    <label for="end">End Date</label>
+    <input type="date" placeholder="Enter End Date" name="end" required>
+   
+
+    <button type="submit" class="btn">Enter</button>
+    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+  </form>
+</div>
+
+<script>
+  localStorage.setItem('startDate', )
+function openForm() {
+  document.getElementById("myForm").style.display = "block" ;
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
+</script>
+
+{% endblock content %}
