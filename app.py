@@ -90,7 +90,7 @@ def hotel_page(chain, hotelname=None):
                     chain_id = d[0],
                     rooms = select_all_rooms_by_chain(d[0])
                 )
-        return redirect(url_for("home"))
+        return redirect(url_for("home"), d=data)
     else:
         pass
 
@@ -173,6 +173,11 @@ def getAllCurrent():
 @app.route("/getAllFuture")
 def getAllFuture():
     return json.dumps(future_reservations_by_admin(session["admin"], session["date"]))
+
+@app.route("/getUnavailable")
+def getUnavailable():
+    return json.dumps(select_unavailable_rooms(session["location"]))
+
 
 
 

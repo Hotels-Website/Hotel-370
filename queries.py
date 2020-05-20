@@ -135,13 +135,26 @@ def select_all_locations():
         print(data)
     return data
 
+def select_unavailable_rooms(location):
+    with create_connection(db) as c: 
+        c.execute(
+            """select room.id, room.type, room.price
+            from room
+            inner join reservation on room.id = reservation.roomid
+            inner join location on location.id = room.locationid
+            where location.name = '{location}'
+            """)
+        data = c.fetchall()
+        print(data)
+    return data
+
 def location_in_db(i, j):
     with create_connection(db) as c:
         c.execute(
             f"""select i, j
             from location
             where location.i = '{i}'
-            and location.j = '{j}'
+            and location.j = '{j}' 
             """)
         data = c.fetchone()
     return data
@@ -181,7 +194,7 @@ def select_all_rooms_by_chain(locid):
     with create_connection(db) as c:
         c.execute(
             f"""
-            select *
+            select room.id, room.locationid, room.type, room.price
             from location
             join hotel
             on hotel.id = location.hotelid
@@ -295,7 +308,7 @@ def current_reservations_by_admin(admin, date):
 def future_reservations_by_admin(admin, date):
     with create_connection(db) as c:
         c.execute(f"""
-            select customer.firstname, customer.lastname, reservation.startdate, reservation.enddate, room.roomnumber
+           select customer.firstname, customer.lastname, reservation.startdate, reservation.enddate, room.id
             from reservation
             inner join customer on customer.id = reservation.custid
             inner join room on reservation.roomid = room.id
