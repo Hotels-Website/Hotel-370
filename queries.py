@@ -121,6 +121,13 @@ def updated_insert_new_room(locid, rt, price):
     with create_connection(db) as c:
         c.execute(f"insert into room values (null, '{locid}','{rt}','{price}')")
 
+#DELETE
+def delete_reservation(id):
+    with create_connection(db) as c:
+        c.execute(
+            """DELETE FROM reservation 
+            WHERE id = '{id}'
+            """)
 
 #SELECT
 def select_all_locations():

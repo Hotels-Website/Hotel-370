@@ -2,41 +2,32 @@
 {% block content %}
 <h1>{{chain}} - {{name}}</h1>
 <h2>Location - {{location}}</h2>
-<ol>
-  <li>Anyone can view this page</li>
-  <li>Name and Address</li>
-  <li>Rooms and rates</li>
-  <li>display unavailable rooms - with unclickable</li>
-  <li>customers can book and cancel from this page</li>
-</ol>
+
 
 <!-- {{rooms}} -->
 <table class="table table-hover">
   <thead>
     <tr>
-      <th scope="col">Chain</th>
-      <th scope="col">Hotel</th>
       <th scope="col">Address</th>
       <th scope="col">Room#</th>
-      <th scope="col">Size</th>
+      <th scope="col">Room Type</th>
       <th scope="col">Price</th>
       <th scope="col">Option</th>
-
     </tr>
   </thead>
   <tbody>
     {% if rooms %}
-    {% for _,_,location,i,j,_,hotel,roomid,_,_,size,price in rooms %}
+    {% for roomid,locationid,type,price in rooms %}
     <tr>
-      <th scope="row">{{hotel}}</th>
       <td>{{location}}</td>
-      <td>({{i}},{{j}})</td>
       <td>{{roomid}}</td>
-      <td>{{size}}</td>
+      <td>{{type}}</td>
       <td>{{price}}</td>
       <td>
-        <button type="button" class="btn btn-sm btn-success">Book</button>
-        <button type="button" class="btn btn-sm btn-danger">Delete</button>
+        <form method="post" action="/reserve">
+          <button type="button" class="btn btn-sm btn-success">Book</button>
+        <form method="post" action="/cancel">
+          <button type="button" class="btn btn-sm btn-danger">Cancel</button>
       </td>
     </tr>
     {% endfor %}
