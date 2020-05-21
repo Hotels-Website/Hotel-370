@@ -266,7 +266,15 @@ def select_reservations_by_username(name):
     iden = select_user_id_by_name(name)
     select_reservations_by_custid(iden)
 
-
+def select_account_info(custid):
+    with create_connection(db) as c:
+        c.execute(
+            f"""select *
+            from customer
+            where customer.id = '{custid}'
+            """)
+        data = c.fetchone()
+    return data
 
 def user_in_db(un, pw):
     with create_connection(db) as c:
@@ -421,8 +429,11 @@ def initialize_dummy_data():
     
 def direct_test():
     #insert_new_reservation(5222020,5232020,0,0)
-    if check_reservation_by_customer(0,0):
-       delete_reservation(0,0)
+    #if check_reservation_by_customer(0,0):
+    #   delete_reservation(0,0)
+
+    custid = select_user_id_by_name("John0")
+    print(custid)
 
 def reset_db():
     os.remove("hotel.db")

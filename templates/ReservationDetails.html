@@ -1,62 +1,79 @@
 {% extends "layout.html" %}
 {% block content %}
 <h1>Reservations - <span style="font-size:.7em;color:darkblue">{{session["user"]}}</span></h1>
-<h2>this page should only be visible after a user has logged in</h2>
-<ol>
-   <li>user should only see his/her reservations</li>
-   <li>booking or canceling should only be done on search engine page or hotel page</li>
-</ol>
-<table class="table">
-  <thead>
-    <tr>
-       <th scope="col">Hotel</th>
-      <th scope="col">Address</th>
-      <th scope="col">Room #</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-       <td><i>Pull Hotel Name</i></td>
-      <td><i>Pull Address</i></td>
-      <td><i>Pull Room #</i></td>
-      <td><input class="button" type="button" onclick="" value="Cancel Reservation" /></td>
-   </tr>
-    <tr>
-      <td><i>Pull Hotel Name</i></td>
-      <td><i>Pull Address</i></td>
-      <td><i>Pull Room #</i></td>
-      <td><input class="button" type="button" onclick="" value="Cancel Reservation" /></td>
-
-    </tr>
-    <tr>
-      <td><i>Pull Hotel Name</i></td>
-      <td><i>Pull Address</i></td>
-      <td><i>Pull Room #</i></td>
-      <td><input class="button" type="button" onclick="" value="Cancel Reservation" /></td>
-
-      <td><input class="button" type="button" onclick="" value="Cancel Reservation" /></td>
-
-      <td><input class="button" type="button" onclick="" value="Cancel Reservation" /></td>
-
-      <td><input class="button" type="button" onclick="" value="Cancel Reservation" /></td>
-
-      <td><input class="button" type="button" onclick="" value="Cancel Reservation" /></td>
-
-      <td><input class="button" type="button" onclick="" value="Cancel Reservation" /></td>
-
-      <td><input class="button" type="button" onclick="" value="Cancel Reservation" /></td>
-
-      <td><input class="button" type="button" onclick="" value="Cancel Reservation" /></td>
-
-      <td><input class="button" type="button" onclick="" value="Cancel Reservation" /></td>
-
-      <td><input class="button" type="button" onclick="" value="Cancel Reservation" /></td>
-
-      <td><input class="button" type="button" onclick="" value="Cancel Reservation" /></td>
-
-    </tr>
-  </tbody>
-</table>
+<div class="card">
+<div class="card-body">
+  <table id="table" class="table">
+    <thead>
+      <tr>
+        <th scope="col">Hotel</th>
+        <th scope="col">Check-in Day</th>
+        <th scope="col">Check-out Day</th>
+        <th scope="col">Room Number</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>
 <input class="button" type="button" onclick="window.location.replace('Details')" value="Return" />
 
+<script type="text/javascript">
+  var tableRef = document.getElementById('table').getElementsByTagName('tbody')[0];
+  getAllReservations(tableRef);
+
+  function getAllReservations(table){
+    const Http1 = new XMLHttpRequest();
+    const url='/getAllReservations';
+    Http1.open("GET", url);
+    Http1.send();
+
+    Http1.onreadystatechange = () => {
+      if (Http1.readyState === 4){
+        let text = Http1.responseText;
+        if(text === "[]")
+        {
+          // Insert a row in the table at the last row
+            var newRow   = table.insertRow();
+            
+            // Insert a cell in the row at index 0
+            var rowNum  = newRow.insertCell(0);
+
+            // Append a text node to the cell
+            var rowNumText  = document.createTextNode("No Reservations Found");
+            rowNum.appendChild(rowNumText);
+        }
+        else
+        {
+          var data = JSON.parse(text); // current reservations as a parsed JSON object
+          for(var i = 0; i < data.length; i++)
+          {
+            // Insert a row in the table at the last row
+            var newRow   = table.insertRow();
+            
+            // Insert a cell in the row at index 0
+            var hotel  = newRow.insertCell(0);
+            var checkIn  = newRow.insertCell(1);
+            var checkOut  = newRow.insertCell(2);
+            var roomNum  = newRow.insertCell(3);
+
+            // all these would be filled with values retrieved from out select statement
+            var hotelText  = document.createTextNode(data[i][0]);
+            hotel.appendChild(hotelText);
+            var checkInText  = document.createTextNode(data[i][1]);
+            checkIn.appendChild(checkInText);
+            var checkOutText  = document.createTextNode(data[i][2]);
+            checkOut.appendChild(checkOutText);
+            var roomNumText  = document.createTextNode(data[i][3]);
+            roomNum.appendChild(roomNumText);
+          }
+        }
+      }
+    }
+  }
+</script>
 {% endblock content %}

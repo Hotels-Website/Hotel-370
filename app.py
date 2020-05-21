@@ -49,11 +49,10 @@ def search():
 
 @app.route("/AccountDetails")
 def accountdetails():
-    # if "user" in session:
-    #     username = session["user"]
-    #     data = select_user_id_by_name(session["userid"])
-    return render_template("AccountDetails.html")
-    return render_template("Details.html")
+    if "user" in session:
+        username = session["user"]
+        return render_template("AccountDetails.html")
+    return render_template("login.html")
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -241,6 +240,19 @@ def getAllCurrent():
 def getAllFuture():
     return json.dumps(future_reservations_by_admin(session["admin"], session["date"]))
 
+@app.route("/getAllReservations")
+def getAllReservations():
+    if "user" in session:
+        custid = select_user_id_by_name(session["user"])
+        return json.dumps(select_reservations_by_custid(custid))
+    return render_template("login.html")
+
+@app.route("/getAccountInfo")
+def getAccountInfo():
+    if "user" in session:
+        custid = select_user_id_by_name(session["user"])
+        return json.dumps(select_account_info(custid))
+
 # Posting Data
 @app.route("/add_room_to_session", methods=["GET","POST"])
 def add_room_to_session():
@@ -248,6 +260,7 @@ def add_room_to_session():
         session["roomid"] = request.form["roomid"]
         return session["roomid"]
 
+# Test Routes
 @app.route("/adam")
 def adam():
     return render_template("confirm.html")
