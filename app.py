@@ -107,15 +107,30 @@ def add_reservation():
         return render_template("reservations.html")
     return render_template("login.html") 
 
+@app.route("/bookroom", methods=["GET","POST"])
+def bookroom():
+    if request.method == "POST":
+        startdate = request.form["chckin"]
+        enddate = request.form["chckout"]
+        if "roomid" in session:
+            if not check_reservation(startdate, enddate, session["roomid"]):
+                custid = select_user_id_by_name(session["user"])
+                resDetails = insert_new_reservation(startdate, enddate, session["roomid"], custid)
+                session.pop("roomid", None)
+                return render_template("confirm.html", d=resDetails)
+    return render_template("reservations.html")
+
 @app.route("/cancel_reservation", methods = ["GET", "POST"])
 def cancel_reservation():
     if "user" in session:
         custid = select_user_id_by_name(session["user"])
-        if check_reservation_by_customer(custid, session["roomid"]):
-            delete_reservation(custid, session["roomid"])
-            session.pop("roomid", None)
-            return render_template("ReservationDetails.html")
-    return render_template("login.html") 
+        if "roomid" in session:
+            if check_reservation_by_customer(custid, session["roomid"]):
+                delete_reservation(custid, session["roomid"])
+                session.pop("roomid", None)
+                return render_template("ReservationDetails.html")
+            return render_template("home.html")
+        return render_template("login.html") 
 
 
 @app.route("/reservations")
@@ -214,18 +229,6 @@ def admin_add_loc():
 
     return render_template("admin.html")
 
-@app.route("/bookroom", methods=["GET","POST"])
-def bookroom():
-    if request.method == "POST":
-        startdate = request.form["chckin"]
-        enddate = request.form["chckout"]
-        if "roomid" in session:
-            if not check_reservation(startdate, enddate, session["roomid"]):
-                custid = select_user_id_by_name(session["user"])
-                resDetails = insert_new_reservation(startdate, enddate, session["roomid"], custid)
-                session.pop("roomid", None)
-                return render_template("confirm.html", d=resDetails)
-    return render_template("reservations.html")
 
 # Returning Data
 @app.route("/getAllLocations")
