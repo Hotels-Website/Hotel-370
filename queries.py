@@ -130,6 +130,15 @@ def updated_insert_new_room(locid, rt, price):
     with create_connection(db) as c:
         c.execute(f"insert into room values (null, '{locid}','{rt}','{price}')")
 
+def insert_new_reservation(start, end, room, cust):
+    with create_connection(db) as c:
+        c.execute(f"insert into reservation (startdate, enddate, roomid, custid) values ('{start}','{end}','{room}','{cust}')")
+
+    with create_connection(db) as c:
+        c.execute(f"select * from reservation where startdate = '{start}' and custid = '{cust}'")
+        data = c.fetchone()
+    return data
+
 
 #DELETE
 def delete_reservation(custid, roomnum):
@@ -386,16 +395,6 @@ def search_hotel(hotelname, hoteltype, costmin, costmax):
         data = c.fetchall()
     return data
 
-def insert_new_reservation(start, end, room, cust):
-    with create_connection(db) as c:
-        c.execute(f"insert into reservation (startdate, enddate, roomid, custid) values ('{start}','{end}','{room}','{cust}')")
-
-    with create_connection(db) as c:
-        c.execute(f"select * from reservation where startdate = '{start}' and custid = '{cust}'")
-        data = c.fetchone()
-    return data
-
-
 import random
 def initialize_dummy_data():
     firstnames = ["John", "Jacob", "Sean", "Adam", "Joseph"]
@@ -428,6 +427,7 @@ def initialize_dummy_data():
                     updated_insert_new_room(locid, room_type, room_price)
 
     insert_new_reservation(5222020,5232020,1,1)
+    insert_new_reservation(5222020,5232020,2,1)
     
 def direct_test():
     #insert_new_reservation(5222020,5232020,0,0)
