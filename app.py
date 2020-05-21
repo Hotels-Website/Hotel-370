@@ -18,10 +18,10 @@ def details():
 
 @app.route("/ReservationDetails")
 def reservationdetails():
-    # if "user" in session:
-    #     username = session["user"]
-    #     data = select_reservations_by_custid(session["userid"])
-    return render_template("ReservationDetails.html")
+    if "user" in session:
+        username = session["userid"]
+        data = select_reservations_by_custid_res(username)
+        return render_template("ReservationDetails.html", reservations=data)
     return render_template("Details.html")
 
 @app.route("/welcome")
@@ -42,10 +42,10 @@ def search():
 
 @app.route("/AccountDetails")
 def accountdetails():
-    # if "user" in session:
-    #     username = session["user"]
-    #     data = select_user_id_by_name(session["userid"])
-    return render_template("AccountDetails.html")
+    if "user" in session:
+        username = session["user"]
+        data = select_user_id_by_name_all(username)
+        return render_template("AccountDetails.html", name=data)
     return render_template("Details.html")
 
 

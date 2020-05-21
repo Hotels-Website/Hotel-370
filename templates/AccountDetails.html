@@ -1,14 +1,25 @@
 {% extends 'layout.html' %}
 {% block content%}
       {% if name %}
-      {% for firstname,lastname,username,password in name %}
-   	<h1>My Profile</h1>
-      <p>Firstname: {{firstname}}</p>
-      <p>Lastname: {{lastname}}</p>
-      <p>Username: {{username}}</p>
-      <p>Password: {{password}}</p>
-      {% endfor %}
-
+      <h1>My Profile - <span style="font-size:.7em;color:darkblue">{{session["user"]}}</span></h1>
+      
+      <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Firstname</th>
+                <th scope="col">Lastname</th>
+                <th scope="col">Username</th>
+                <th scope="col">Password</th>
+              </tr>
+            </thead>
+            <tbody>
+                  <tr>
+                        <td>{{name[1]}}</td>
+                        <td>{{name[2]}}</td>
+                        <td>{{name[3]}}</td>
+                        <td>{{name[4]}}</td>
+                  </tr>
+            </tbody>
       {% else %}
       <h1>My Profile</h1>
       <p>Firstname: <i>not available</i></p>
@@ -16,6 +27,7 @@
       <p>Username: <i>not available</i></p>
       <p>Password: <i>not available</i></p>
       {% endif %}
+      </table>
 
       <input class="button" type="button" onclick="window.location.replace('Details')" value="Return" />
 {% endblock content%}
