@@ -41,23 +41,33 @@
     <div class="button big"><button class="open-button" onclick="openForm()">Enter Todays Date</button></div>
 
 <div class="form-popup" id="myForm">
-  <form action="/action_page.php" class="form-container">
+  <!-- <form action ="layout-Javascript-LocalStorage.html"> -->
       <center><h2>Please Enter Dates</h2></center>
 
     <label for="start">Todays Date</label>
-    <input type="startdate" placeholder="Enter Todays Date" name="start" required>
-        
-    <label for="end">End Date</label>
-    <input type="date" placeholder="Enter End Date" name="end" required>
-   
+    
+  
+    <input type="date"  id="startDate" />
+    <!-- placeholder="Enter Todays Date" name="start" required -->
+    <input type="submit" value="click" onclick="passValues();"/>
 
+    
+    
     <button type="submit" class="btn">Enter</button>
     <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-  </form>
+
 </div>
 
 <script>
-  localStorage.setItem('startDate', )
+  function passValues()
+  {
+    var startDate= document.getElementById("startDate").value;
+    localStorage.setItem("startDate", startDate);
+    window.open("/", "_self");
+    
+    return false;
+  }
+  
 function openForm() {
   document.getElementById("myForm").style.display = "block" ;
 }

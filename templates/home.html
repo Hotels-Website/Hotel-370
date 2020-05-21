@@ -99,17 +99,24 @@
         </button>
       </div>
       <div class="modal-body">
-        ...
+        <input type="date"  id="startDate" />
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-primary" value="click" onclick="passValues()" data-dismiss="modal">Submit The Start Date</button>
       </div>
     </div>
   </div>
 </div>
 
 <script>
+  function passValues()
+  {
+    var startDate= document.getElementById("startDate").value;
+    localStorage.setItem("startDate", startDate);
+    getMyStart();
+  }
+  
   {% if not session["date"] %}
     $('#dateModal').modal('show');
   {% endif %}
