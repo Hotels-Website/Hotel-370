@@ -236,6 +236,17 @@ def select_all_rooms():
         data = c.fetchall()
     return data
 
+def select_all_available_rooms():
+    with create_connection(db) as c:
+        c.execute(
+            """select room.id
+            from room
+            left join reservation on reservation.roomid = room.id
+            where reservation.roomid IS NULL
+            """)
+        data = c.fetchall()
+    return data
+
 def select_all_rooms_by_chain(locid):
     with create_connection(db) as c:
         c.execute(
