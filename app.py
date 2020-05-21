@@ -7,6 +7,13 @@ import json
 app = Flask(__name__)
 app.secret_key = "hello"
 
+@app.route("/bla", methods=["GET", "POST"])
+def bla():
+    if request.method == "POST":
+        return request.form["name"]
+    return render_template("bla.html")
+
+
 
 @app.route("/tiara")
 def tiara():

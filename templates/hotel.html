@@ -29,7 +29,6 @@
         <td>
             <button type="button" id={{roomid}} class="btn btn-sm btn-danger cancel">Cancel</button>
         </td>
-    </tr>
     {% endfor %}
     {% else %}
     <tr>
@@ -45,9 +44,11 @@
   var btns = document.querySelectorAll(".book") 
   var btns2 = document.querySelectorAll(".cancel") 
   var roomid;
+
   for(var b of btns){
     b.addEventListener("click", myFunc)
   }
+
 
   for(var c of btns2){
     c.addEventListener("click", myFunc)
@@ -56,6 +57,9 @@
   function myFunc(event){
      roomid = event.target.getAttribute("id");
      console.log(roomid);
+
+  function myFunc(event){
+    alert(event.target.getAttribute("id"));
   }
 
 </script>

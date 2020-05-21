@@ -127,11 +127,6 @@ def insert_new_location(hotel, name, i,j):
     return data
 
 
-def insert_new_rooms(rooms):
-    with create_connection(db) as c:
-        for locid, rn, size, price in rooms:
-            c.execute(f"insert into room (locationid,roomnumber,size,price) values ({locid},{rn},{size},{price})")
-
 def updated_insert_new_room(locid, rt, price):
     with create_connection(db) as c:
         c.execute(f"insert into room values (null, '{locid}','{rt}','{price}')")
