@@ -1,13 +1,11 @@
 {% extends 'layout.html' %}
 {% block content%}
       {% if name %}
-      {% for firstname,lastname,username,password in name %}
-   	<h1>My Profile</h1>
-      <p>Firstname: {{firstname}}</p>
-      <p>Lastname: {{lastname}}</p>
-      <p>Username: {{username}}</p>
-      <p>Password: {{password}}</p>
-      {% endfor %}
+      <h1>My Profile - <span style="font-size:.7em;color:darkblue">{{session["user"]}}</span></h1>
+      <p><strong>Firstname:</strong> {{name[1]}}</p>
+      <p><strong>Lastname:</strong> {{name[2]}}</p>
+      <p><strong>Username:</strong> {{name[3]}}</p>
+      <p><strong>Password:</strong> {{name[4]}}</p>
 
       {% else %}
       <h1>My Profile</h1>

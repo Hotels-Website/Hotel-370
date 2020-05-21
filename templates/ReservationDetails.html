@@ -1,40 +1,31 @@
 {% extends "layout.html" %}
 {% block content %}
-<h1>Reservations - <span style="font-size:.7em;color:darkblue">{{session["user"]}}</span></h1>
-<h2>this page should only be visible after a user has logged in</h2>
-<ol>
-   <li>user should only see his/her reservations</li>
-   <li>booking or canceling should only be done on search engine page or hotel page</li>
-</ol>
+<h1>Reservations for: <span style="font-size:.7em;color:darkblue">{{session["user"]}}</span></h1>
+
 <table class="table">
   <thead>
     <tr>
-       <th scope="col">Hotel</th>
-      <th scope="col">Address</th>
+      <th scope="col">Hotel</th>
+      <th scope="col">Type</th>
       <th scope="col">Room #</th>
+      <th scope="col">Price</th>
+      <th scope="col">Start Date</th>
+      <th scope="col">End Date</th>
     </tr>
   </thead>
   <tbody>
+    {% if reservations %}
+    {% for name,type,price,startdate,enddate,roomid in reservations %}
     <tr>
-       <td><i>Pull Hotel Name</i></td>
-      <td><i>Pull Address</i></td>
-      <td><i>Pull Room #</i></td>
-      <td><input class="button" type="button" onclick="" value="Cancel Reservation" /></td>
+      <td><i>{{name}}</i></td>
+      <td><i>{{type}}</i></td>
+      <td><i>{{roomid}}</i></td>
+      <td><i>${{price}}</i></td>
+      <td><i>{{startdate}}</i></td>
+      <td><i>{{enddate}}</i></td>
    </tr>
-    <tr>
-      <td><i>Pull Hotel Name</i></td>
-      <td><i>Pull Address</i></td>
-      <td><i>Pull Room #</i></td>
-      <td><input class="button" type="button" onclick="" value="Cancel Reservation" /></td>
-
-    </tr>
-    <tr>
-      <td><i>Pull Hotel Name</i></td>
-      <td><i>Pull Address</i></td>
-      <td><i>Pull Room #</i></td>
-      <td><input class="button" type="button" onclick="" value="Cancel Reservation" /></td>
-
-    </tr>
+   {% endfor %}
+   {% endif %}
   </tbody>
 </table>
 <input class="button" type="button" onclick="window.location.replace('Details')" value="Return" />
