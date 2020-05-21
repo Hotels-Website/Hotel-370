@@ -1,0 +1,51 @@
+*{
+	margin:0;
+	padding:0;
+}body{
+    background-image: url();
+    background- size:100% 700px;
+    background-repeat: no-repeat;
+}
+h1{
+	text-align: center;
+	padding: 20px;
+}
+h2{
+	text-align: center;
+	padding: 20px;
+}
+.register{
+	background: black;
+    width: 280px;
+    margin: 0px 0px 0px 400px;
+    color: white;
+    font-size: 20
+    padding: 20px;
+    border-radius: 10px;
+}
+#register{
+	margin-left: 50px;
+}label{
+	color: white;
+	font-family: sans-serif;
+	font-style: 18px;
+	font-style: italic;
+}
+#name{
+    width: 320px;
+    border: none;
+    border-radius: 3px;
+    outline: 0px;
+    padding: 7px;
+}
+#sub{
+	width: 200px;
+    padding: 7px;
+    font-size: 16px;
+    font-family: sans-serif;
+    font-style: italic;
+    font-weight: 600;
+    border: none;
+    border-radius: 3px;
+    outline: 0;
+}
