@@ -19,16 +19,26 @@
     {% if rooms %}
     {% for roomid,locationid,type,price in rooms %}
     <tr>
-      <td>{{location}}</td>
-      <td>{{roomid}}</td>
-      <td>{{type}}</td>
-      <td>{{price}}</td>
-      <td>
-        <form method="post" action="/reserve">
-          <button type="button" class="btn btn-sm btn-success">Book</button>
-        <form method="post" action="/cancel">
-          <button type="button" class="btn btn-sm btn-danger">Cancel</button>
-      </td>
+        <td>{{location}}</td>
+        <td>{{roomid}}</td>
+        <td>{{type}}</td>
+        <td>{{price}}</td>
+        <td>
+            <button type="button" class="btn btn-sm btn-success">Book</button>
+        </td>
+    </tr>
+    <tr>
+      <form method="post" action="/cancel">
+        <td>{{location}}</td>
+        <td id="roomid">{{roomid}}</td>
+        <td>{{type}}</td>
+        <td>{{price}}</td>
+        <td>
+            <button type="button" class="btn btn-sm btn-danger">Cancel</button>
+            <hr>
+            <hr>
+        </td>
+      </form>
     </tr>
     {% endfor %}
     {% else %}

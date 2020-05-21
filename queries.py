@@ -142,6 +142,18 @@ def select_all_locations():
         print(data)
     return data
 
+def check_reservation(startdate, enddate, room):
+    with create_connection(db) as c:
+        c.execute(
+            f"""select roomid
+            from reservation
+            where reservation.roomid = '{roomid}'
+            and reservation.startdate = '{startdate}'
+            and reservation.enddate = '{enddate}'
+            """)
+        data = c.fetchone()
+    return data
+
 def select_unavailable_rooms(location):
     with create_connection(db) as c: 
         c.execute(

@@ -97,7 +97,12 @@ def home():
 
 @app.route("/add_reservation")
 def add_reservation():
-    pass
+    if "user" in session:
+        user = session["user"]
+        return render_template("reservation.html")
+    return render_template("login.html") 
+
+
 
 
 @app.route("/reservations")
@@ -196,6 +201,12 @@ def admin_add_loc():
 
     return render_template("admin.html")
 
+@app.route("/bookroom", methods=["GET","POST"])
+def bookroom():
+    if request.method == "POST":
+        startdate = request.form["chckin"]
+        enddate = request.form["chckout"]
+
 
 # Returning Data
 @app.route("/getAllLocations")
@@ -209,10 +220,6 @@ def getAllCurrent():
 @app.route("/getAllFuture")
 def getAllFuture():
     return json.dumps(future_reservations_by_admin(session["admin"], session["date"]))
-
-@app.route("/getUnavailable")
-def getUnavailable():
-    return json.dumps(select_unavailable_rooms(session["location"]))
 
 
 
