@@ -1,33 +1,64 @@
 {% extends 'layout.html' %}
 {% block content%}
-      {% if name %}
-      <h1>My Profile - <span style="font-size:.7em;color:darkblue">{{session["user"]}}</span></h1>
-      
-      <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Firstname</th>
-                <th scope="col">Lastname</th>
-                <th scope="col">Username</th>
-                <th scope="col">Password</th>
-              </tr>
-            </thead>
-            <tbody>
-                  <tr>
-                        <td>{{name[1]}}</td>
-                        <td>{{name[2]}}</td>
-                        <td>{{name[3]}}</td>
-                        <td>{{name[4]}}</td>
-                  </tr>
-            </tbody>
-      {% else %}
-      <h1>My Profile</h1>
-      <p>Firstname: <i>not available</i></p>
-      <p>Lastname: <i>not available</i></p>
-      <p>Username: <i>not available</i></p>
-      <p>Password: <i>not available</i></p>
-      {% endif %}
-      </table>
+<div class="card">
+<div class="card-body">
+  <table id="table" class="table">
+    <thead>
+      <tr>
+        <th scope="col">First Name</th>
+        <th scope="col">Last Name</th>
+        <th scope="col">User Name</th>
+        <th scope="col">Password</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+<input class="button" type="button" onclick="window.location.replace('Details')" value="Return" />
 
-      <input class="button" type="button" onclick="window.location.replace('Details')" value="Return" />
+<script>
+      var tableRef = document.getElementById('table').getElementsByTagName('tbody')[0];
+      getAllReservations(tableRef);
+
+      function getAllReservations(table){
+            const Http1 = new XMLHttpRequest();
+            const url='/getAccountInfo';
+            Http1.open("GET", url);
+            Http1.send();
+
+            Http1.onreadystatechange = () => {
+                  if (Http1.readyState === 4){
+                        let text = Http1.responseText;
+                        var data = JSON.parse(text); // current reservations as a parsed JSON object
+                        console.log(data);
+                        console.log(data[0]);
+                        // Insert a row in the table at the last row
+                        var newRow   = table.insertRow();
+
+                        // Insert a cell in the row at index 0
+                        var firstName  = newRow.insertCell(0);
+                        var lastName  = newRow.insertCell(1);
+                        var user  = newRow.insertCell(2);
+                        var pass  = newRow.insertCell(3);
+
+                        // all these would be filled with values retrieved from out select statement
+                        var firstNameText  = document.createTextNode(data[1]);
+                        firstName.appendChild(firstNameText);
+                        var lastNameText  = document.createTextNode(data[2]);
+                        lastName.appendChild(lastNameText);
+                        var userText  = document.createTextNode(data[3]);
+                        user.appendChild(userText);
+                        var passText  = document.createTextNode(data[4]);
+                        pass.appendChild(passText);
+                              
+                  }
+            }
+      }
+      
+</script>
 {% endblock content%}

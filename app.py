@@ -7,6 +7,13 @@ import json
 app = Flask(__name__)
 app.secret_key = "hello"
 
+@app.route("/bla", methods=["GET", "POST"])
+def bla():
+    if request.method == "POST":
+        return request.form["name"]
+    return render_template("bla.html")
+
+
 
 @app.route("/tiara")
 def tiara():
@@ -46,7 +53,7 @@ def accountdetails():
         username = session["user"]
         data = select_user_id_by_name_all(username)
         return render_template("AccountDetails.html", name=data)
-    return render_template("Details.html")
+    return render_template("login.html")
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -95,9 +102,36 @@ def home():
     return render_template('home.html', hotels=data)
 
 
-@app.route("/add_reservation")
+@app.route("/add_reservation", methods = ["GET", "POST"])
 def add_reservation():
-    pass
+    if "user" in session:
+        return render_template("reservations.html")
+    return render_template("login.html") 
+
+@app.route("/bookroom", methods=["GET","POST"])
+def bookroom():
+    if request.method == "POST":
+        startdate = request.form["chckin"]
+        enddate = request.form["chckout"]
+        if "roomid" in session:
+            if not check_reservation(startdate, enddate, session["roomid"]):
+                custid = select_user_id_by_name(session["user"])
+                resDetails = insert_new_reservation(startdate, enddate, session["roomid"], custid)
+                session.pop("roomid", None)
+                return render_template("confirm.html", d=resDetails)
+    return render_template("reservations.html")
+
+@app.route("/cancel_reservation", methods = ["GET", "POST"])
+def cancel_reservation():
+    if "user" in session:
+        custid = select_user_id_by_name(session["user"])
+        if "roomid" in session:
+            if check_reservation_by_customer(custid, session["roomid"]):
+                delete_reservation(custid, session["roomid"])
+                session.pop("roomid", None)
+                return render_template("ReservationDetails.html")
+            return render_template("home.html")
+        return render_template("login.html") 
 
 
 @app.route("/reservations")
@@ -110,7 +144,7 @@ def reservations():
 
 
 @app.route("/hotel/<chain>")
-@app.route("/hotel/<chain>/<hotelname>")
+@app.route("/hotel/<chain>/<hotelname>", methods = ["GET", "POST"])
 def hotel_page(chain, hotelname=None):
     data = select_all_hotels()
     if hotelname:
@@ -126,7 +160,7 @@ def hotel_page(chain, hotelname=None):
                     chain_id = d[0],
                     rooms = select_all_rooms_by_chain(d[0])
                 )
-        return redirect(url_for("home"))
+        return redirect(url_for("home"), d=data)
     else:
         pass
 
@@ -210,6 +244,30 @@ def getAllCurrent():
 def getAllFuture():
     return json.dumps(future_reservations_by_admin(session["admin"], session["date"]))
 
+@app.route("/getAllReservations")
+def getAllReservations():
+    if "user" in session:
+        custid = select_user_id_by_name(session["user"])
+        return json.dumps(select_reservations_by_custid(custid))
+    return render_template("login.html")
+
+@app.route("/getAccountInfo")
+def getAccountInfo():
+    if "user" in session:
+        custid = select_user_id_by_name(session["user"])
+        return json.dumps(select_account_info(custid))
+
+# Posting Data
+@app.route("/add_room_to_session", methods=["GET","POST"])
+def add_room_to_session():
+    if request.method == "POST":
+        session["roomid"] = request.form["roomid"]
+        return session["roomid"]
+
+# Test Routes
+@app.route("/adam")
+def adam():
+    return render_template("confirm.html")
 
 
 
