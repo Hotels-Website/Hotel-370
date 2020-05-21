@@ -24,13 +24,13 @@
         <td>{{type}}</td>
         <td>{{price}}</td>
         <td>
-            <button type="button" class="btn btn-sm btn-success">Book</button>
+            <button type="button" id={{roomid}} class="btn btn-sm btn-success book">Book</button>
         </td>
     </tr>
     <tr>
       <form method="post" action="/cancel">
         <td>{{location}}</td>
-        <td id="roomid">{{roomid}}</td>
+        <td>{{roomid}}</td>
         <td>{{type}}</td>
         <td>{{price}}</td>
         <td>
@@ -50,4 +50,16 @@
     {% endif %}
   </tbody>
 </table>
+
+<script>
+  var btns = document.querySelectorAll(".book") 
+  for(var b of btns){
+    b.addEventListener("click", myFunc)
+  }
+
+  function myFunc(event){
+    alert(event.target.getAttribute("id"));
+  }
+
+</script>
 {% endblock %}
