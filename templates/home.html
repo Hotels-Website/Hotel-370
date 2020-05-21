@@ -166,13 +166,9 @@
     getMyStart();
   }
 
-  {
-    %
-    if not session["date"] %
-  }
-  $('#dateModal').modal('show'); {
-    % endif %
-  }
+  {% if not session["date"] %}
+  $('#dateModal').modal('show');
+   {% endif %}
 
 
   const map = document.getElementById("map")
