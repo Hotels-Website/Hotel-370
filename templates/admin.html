@@ -30,9 +30,6 @@
       </tr>
     </tbody>
   </table>
-  <hr>
-  <br>
-  <br>
 
   <h3>Future Reservations</h3>
   <table id="table2" class="table">
@@ -178,7 +175,7 @@
 
   function getAllFuture(table){
     const Http2 = new XMLHttpRequest();
-    const url2='/getAllCurrent';
+    const url2='/getAllFuture';
     Http2.open("GET", url2);
     Http2.send();
 

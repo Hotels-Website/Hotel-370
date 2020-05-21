@@ -122,19 +122,30 @@ def insert_new_location(hotel, name, i,j):
         c.execute(f"insert into location values (null,'{hotel}','{name}','{i}','{j}')")
 
     with create_connection(db) as c:
-        c.execute(f"select * from location where name='{name}'")
+        c.execute(f"select id from location where name='{name}'")
+        data = c.fetchone()
+    return data
+
+def updated_insert_new_room(locid, rt, price):
+    with create_connection(db) as c:
+        c.execute(f"insert into room (locationid,type,price) values ('{locid}','{rt}',{price})")
+
+
+
+def insert_new_reservation(start, end, room, cust):
+    with create_connection(db) as c:
+        c.execute(f"insert into reservation (startdate, enddate, roomid, custid) values ('{start}','{end}','{room}','{cust}')")
+
+    with create_connection(db) as c:
+        c.execute(f"select * from reservation where startdate = '{start}' and custid = '{cust}'")
         data = c.fetchone()
     return data
 
 
-def insert_new_rooms(rooms):
+#DELETE
+def delete_reservation(custid, roomnum):
     with create_connection(db) as c:
-        for locid, rn, size, price in rooms:
-            c.execute(f"insert into room (locationid,roomnumber,size,price) values ({locid},{rn},{size},{price})")
-
-def updated_insert_new_room(locid, rt, price):
-    with create_connection(db) as c:
-        c.execute(f"insert into room values (null, '{locid}','{rt}','{price}')")
+        c.execute("""DELETE from reservation WHERE custid=? and roomid=?""", (custid, roomnum,))
 
 #SELECT
 def select_all_locations():
@@ -149,13 +160,49 @@ def select_all_locations():
         print(data)
     return data
 
+def check_reservation(startdate, enddate, room):
+    with create_connection(db) as c:
+        c.execute(
+            f"""select roomid
+            from reservation
+            where reservation.roomid = '{room}'
+            and reservation.startdate = '{startdate}'
+            and reservation.enddate = '{enddate}'
+            """)
+        data = c.fetchone()
+    return data
+
+def check_reservation_by_customer(customer, room):
+    with create_connection(db) as c:
+        c.execute(
+            f"""select roomid
+            from reservation
+            where reservation.roomid = '{room}'
+            and reservation.custid = '{customer}'
+            """)
+        data = c.fetchone()
+    return data
+
+def select_unavailable_rooms(location):
+    with create_connection(db) as c: 
+        c.execute(
+            """select room.id, room.type, room.price
+            from room
+            inner join reservation on room.id = reservation.roomid
+            inner join location on location.id = room.locationid
+            where location.name = '{location}'
+            """)
+        data = c.fetchall()
+        print(data)
+    return data
+
 def location_in_db(i, j):
     with create_connection(db) as c:
         c.execute(
             f"""select i, j
             from location
             where location.i = '{i}'
-            and location.j = '{j}'
+            and location.j = '{j}' 
             """)
         data = c.fetchone()
     return data
@@ -191,11 +238,22 @@ def select_all_rooms():
         data = c.fetchall()
     return data
 
+def select_all_available_rooms():
+    with create_connection(db) as c:
+        c.execute(
+            """select room.id
+            from room
+            left join reservation on reservation.roomid = room.id
+            where reservation.roomid IS NULL
+            """)
+        data = c.fetchall()
+    return data
+
 def select_all_rooms_by_chain(locid):
     with create_connection(db) as c:
         c.execute(
             f"""
-            select *
+            select room.id, room.locationid, room.type, room.price
             from location
             join hotel
             on hotel.id = location.hotelid
@@ -216,6 +274,16 @@ def select_user_id_by_name(name):
         data = c.fetchone()
     return data[0]
 
+def select_user_id_by_name_all(name):
+    with create_connection(db) as c:
+        c.execute(
+            f"""select *
+            from customer
+            where customer.username='{name}'
+            """)
+        data = c.fetchone()
+    return data
+
 def select_reservations_by_custid(id):
     with create_connection(db) as c:
         c.execute(
@@ -226,11 +294,35 @@ def select_reservations_by_custid(id):
         data = c.fetchall()
     return data
 
+def select_reservations_by_custid_res(id):
+    with create_connection(db) as c:
+        c.execute(
+            f"""select hotel.name,type,price,startdate,enddate,roomid
+            from location
+            join hotel
+            on location.hotelid=hotel.id
+            join room
+            on room.locationid=location.id
+            join  reservation
+            on reservation.roomid=room.id
+            where reservation.custid={id}
+            """)
+        data = c.fetchall()
+    return data
+
 def select_reservations_by_username(name):
     iden = select_user_id_by_name(name)
     select_reservations_by_custid(iden)
 
-
+def select_account_info(custid):
+    with create_connection(db) as c:
+        c.execute(
+            f"""select *
+            from customer
+            where customer.id = '{custid}'
+            """)
+        data = c.fetchone()
+    return data
 
 def user_in_db(un, pw):
     with create_connection(db) as c:
@@ -289,8 +381,6 @@ def hotel_id_from_admin(name):
     return data[0]
     
 
-def select_rooms_search_criteria():
-    pass
 
 def current_reservations_by_admin(admin, date):
     with create_connection(db) as c:
@@ -309,7 +399,7 @@ def current_reservations_by_admin(admin, date):
 def future_reservations_by_admin(admin, date):
     with create_connection(db) as c:
         c.execute(f"""
-            select customer.firstname, customer.lastname, reservation.startdate, reservation.enddate, room.roomnumber
+           select customer.firstname, customer.lastname, reservation.startdate, reservation.enddate, room.id
             from reservation
             inner join customer on customer.id = reservation.custid
             inner join room on reservation.roomid = room.id
@@ -342,14 +432,6 @@ def search_hotel(hotelname, hoteltype, costmin, costmax):
         data = c.fetchall()
     return data
 
-def insert_new_reservation(start, end, room, cust):
-    with create_connection(db) as c:
-        c.execute(f"insert into reservation (startdate, enddate, roomid, custid) values ('{start}','{end}','{room}','{cust}')")
-
-    with create_connection(db) as c:
-        c.execute(f"select * from reservation")
-        data = c.fetchone()
-    return data
 
 
 import random
@@ -376,14 +458,23 @@ def initialize_dummy_data():
         for location in location_name:
             i += 1
             # print(i)
-            locid, *_ = insert_new_location(cid, location, i, i)
+            insert_new_location(cid, location, i, i)
+            locid = get_locationid_from_cords(i,i)
+            #print(locid)
             for room_type, room_price in rooms.items():
                 for j in range(10):
                     updated_insert_new_room(locid, room_type, room_price)
 
-    for i in range(40):
-        insert_new_reservation(i,i,i,i)
+    insert_new_reservation(5222020,5232020,1,1)
+    insert_new_reservation(5222020,5232020,2,1)
     
+def direct_test():
+    #insert_new_reservation(5222020,5232020,0,0)
+    #if check_reservation_by_customer(0,0):
+    #   delete_reservation(0,0)
+
+    custid = select_user_id_by_name("John0")
+    print(custid)
 
 def reset_db():
     os.remove("hotel.db")
@@ -393,3 +484,4 @@ def reset_db():
 
 if __name__ == '__main__':
     reset_db()
+    # direct_test()
