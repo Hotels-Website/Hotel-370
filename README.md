@@ -254,3 +254,11 @@ git checkout -b [newbranchname] // create and enter new branch
 5. A timeline of progess for the completion of the project milestones.
 6. A list of unit tests and a timetable when each test was successfully passed.
 7. If necessary, what corrective steps were taken if the work fell behind schedule
+
+
+
+What should we add?
+we should have an initialize 1 non-admin user with a booked page
+so we can see if reservations works
+
+
