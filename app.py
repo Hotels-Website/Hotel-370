@@ -206,7 +206,13 @@ def bookroom():
     if request.method == "POST":
         startdate = request.form["chckin"]
         enddate = request.form["chckout"]
+        #if not check_reservation(startdate, enddate, )
 
+@app.route("/bla", methods=["GET","POST"])
+def bla():
+    if request.method == "POST":
+        return request.form["name"]
+    return render_template("bla.html")    
 
 # Returning Data
 @app.route("/getAllLocations")
