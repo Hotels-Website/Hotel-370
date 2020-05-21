@@ -4,15 +4,15 @@
 <table class="table">
  <div class="card">
   <div class="card-body">
-  <h3>Create Booking</h3>
+  <h3>Create Booking for Room#: {{session["roomid"]}}</h3>
     <form method="post" action="/bookroom">
       <div class="form-group">
         <label for="chckin">Check-in</label>
-        <input type="date" name="chckin" class="form-control" id="chckin" placeholder="(Start Date)">
+        <input type="number" name="chckin" class="form-control" id="chckin" placeholder="(Start Date)">
       </div>
       <div class="form-group">
         <label for="chckout">Check-out</label>
-        <input type="date" name="chckout" class="form-control" id="chckout" placeholder="(End Date)">
+        <input type="number" name="chckout" class="form-control" id="chckout" placeholder="(End Date)">
       </div>
       <button type="submit" class="btn btn-primary mb-2" id="addLoc">Book Now!</button>
     </form>

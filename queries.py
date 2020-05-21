@@ -126,19 +126,15 @@ def insert_new_location(hotel, name, i,j):
         data = c.fetchone()
     return data
 
-
 def updated_insert_new_room(locid, rt, price):
     with create_connection(db) as c:
         c.execute(f"insert into room values (null, '{locid}','{rt}','{price}')")
 
 
 #DELETE
-def delete_reservation(id):
+def delete_reservation(custid, roomnum):
     with create_connection(db) as c:
-        c.execute(
-            """DELETE FROM reservation 
-            WHERE id = '{id}'
-            """)
+        c.execute("""DELETE from reservation WHERE custid=? and roomid=?""", (custid, roomnum,))
 
 #SELECT
 def select_all_locations():
@@ -158,9 +154,20 @@ def check_reservation(startdate, enddate, room):
         c.execute(
             f"""select roomid
             from reservation
-            where reservation.roomid = '{roomid}'
+            where reservation.roomid = '{room}'
             and reservation.startdate = '{startdate}'
             and reservation.enddate = '{enddate}'
+            """)
+        data = c.fetchone()
+    return data
+
+def check_reservation_by_customer(customer, room):
+    with create_connection(db) as c:
+        c.execute(
+            f"""select roomid
+            from reservation
+            where reservation.roomid = '{room}'
+            and reservation.custid = '{customer}'
             """)
         data = c.fetchone()
     return data
@@ -376,7 +383,7 @@ def insert_new_reservation(start, end, room, cust):
         c.execute(f"insert into reservation (startdate, enddate, roomid, custid) values ('{start}','{end}','{room}','{cust}')")
 
     with create_connection(db) as c:
-        c.execute(f"select * from reservation")
+        c.execute(f"select * from reservation where startdate = '{start}' and custid = '{cust}'")
         data = c.fetchone()
     return data
 
@@ -410,9 +417,12 @@ def initialize_dummy_data():
                 for j in range(10):
                     updated_insert_new_room(locid, room_type, room_price)
 
-    for i in range(40):
-        insert_new_reservation(i,i,i,i)
+    insert_new_reservation(5222020,5232020,1,1)
     
+def direct_test():
+    #insert_new_reservation(5222020,5232020,0,0)
+    if check_reservation_by_customer(0,0):
+       delete_reservation(0,0)
 
 def reset_db():
     os.remove("hotel.db")
@@ -422,3 +432,4 @@ def reset_db():
 
 if __name__ == '__main__':
     reset_db()
+    #direct_test()

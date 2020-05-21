@@ -46,20 +46,39 @@
   var roomid;
 
   for(var b of btns){
-    b.addEventListener("click", myFunc)
+    b.addEventListener("click", book)
   }
 
 
   for(var c of btns2){
-    c.addEventListener("click", myFunc)
+    c.addEventListener("click", cancel)
   }
 
-  function myFunc(event){
-     roomid = event.target.getAttribute("id");
-     console.log(roomid);
+  function book(event){
+    roomid = event.target.getAttribute("id");
 
-  function myFunc(event){
-    alert(event.target.getAttribute("id"));
+    var http = new XMLHttpRequest();
+    var url = '/add_room_to_session';
+    var params = 'roomid='+roomid;
+    http.open('POST', url, true);
+    
+    //Send the proper header information along with the request
+    http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    http.send(params);  
+    location.href = '/add_reservation'
+  }  
+  function cancel(event){
+    roomid = event.target.getAttribute("id");
+
+    var http = new XMLHttpRequest();
+    var url = '/add_room_to_session';
+    var params = 'roomid='+roomid;
+    http.open('POST', url, true);
+    
+    //Send the proper header information along with the request
+    http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    http.send(params);  
+    location.href = '/cancel_reservation'
   }
 
 </script>

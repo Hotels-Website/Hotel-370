@@ -2,18 +2,19 @@
     <head></head>
     <body>
         <h1>Hello</h1>
-        <p id="data"></p>
-        <input type="text">
+        <p id="data">{{session["bla"]}}</p>
+        <input type="text" id="input" name="input" placeholder="test">
         <button id="myButt">click</button>
         <!-- <script src="http://127.0.0.1:5000/js/bla.js"></script> -->
         
         <script>
             var but = document.getElementById("myButt")
+            var input = document.getElementById("input");
             but.addEventListener("click", myFunc)
             function myFunc(){
                 var http = new XMLHttpRequest();
                 var url = '/bla';
-                var params = 'orem=ipsum&name=binny';
+                var params = 'name='+input.value;
                 http.open('POST', url, true);
                 
                 //Send the proper header information along with the request

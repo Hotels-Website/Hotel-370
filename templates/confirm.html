@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>Order Confirmation - <span style="font-size:.7em;color:darkblue">{{session["user"]}}</span></h1>
+<table class="table">
+ <div class="card">
+  <div class="card-body">
+  <h3>Your Reservation Has Been Confirmed</h3>
+  <form action="/">
+  <button class="btn btn-primary mb-2" id="home">Return to Home</button>
+</div>
+</div>
+</table>
+{% endblock %}
