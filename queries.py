@@ -289,8 +289,14 @@ def hotel_id_from_admin(name):
     return data[0]
     
 
-def select_rooms_search_criteria():
-    pass
+
+
+
+
+
+
+
+
 
 def current_reservations_by_admin(admin, date):
     with create_connection(db) as c:
@@ -350,6 +356,9 @@ def insert_new_reservation(start, end, room, cust):
         c.execute(f"select * from reservation")
         data = c.fetchone()
     return data
+
+
+
 
 
 import random
