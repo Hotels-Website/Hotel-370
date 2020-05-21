@@ -122,7 +122,7 @@ def insert_new_location(hotel, name, i,j):
         c.execute(f"insert into location values (null,'{hotel}','{name}','{i}','{j}')")
 
     with create_connection(db) as c:
-        c.execute(f"select * from location where name='{name}'")
+        c.execute(f"select id from location where name='{name}'")
         data = c.fetchone()
     return data
 
@@ -420,7 +420,9 @@ def initialize_dummy_data():
         for location in location_name:
             i += 1
             # print(i)
-            locid, *_ = insert_new_location(cid, location, i, i)
+            insert_new_location(cid, location, i, i)
+            locid = get_locationid_from_cords(i,i)
+            #print(locid)
             for room_type, room_price in rooms.items():
                 for j in range(10):
                     updated_insert_new_room(locid, room_type, room_price)
