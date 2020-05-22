@@ -310,7 +310,7 @@ def getAllCurrent():
 @app.route("/getAllFuture")
 def getAllFuture():
     return json.dumps(future_reservations_by_admin(session["admin"], session["date"]))
-
+ 
 @app.route("/getAllReservations")
 def getAllReservations():
     hotels = select_all_hotels()
