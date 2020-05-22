@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, render_template, session, request, g, send_from_directory,jsonify
+from flask import Flask, redirect, url_for, render_template, session, request, g, send_from_directory,jsonify, flash
 from actions import *
 from queries import *
 from datetime import date
@@ -88,7 +88,13 @@ def login():
             session["date"] = date.today()
             session["date_display"] = date.today().strftime("%D")
             return redirect(url_for("home"))
-    return render_template("login.html", hotels=hotels)
+        else:
+            error_login = True
+            flash("username or password is incorrect")
+        if un == "" or pw == "":
+            flash("must provide all fields")
+        
+    return render_template("login.html", hotels=hotels, error_login=True)
     
 
 @app.route("/logout")
@@ -105,14 +111,22 @@ def logout():
 
 @app.route("/register", methods=["GET","POST"])
 def register():
+    error = False
     hotels = select_all_hotels()
     if request.method == "POST":
         fn = request.form["fn"]
         ln = request.form["ln"]
         un = request.form["un"]
         pw = request.form["pw"]
-        insert_new_user(fn, ln, un, pw)
-    return render_template("login.html", hotels=hotels)
+        if un == "" or pw == "" or fn == "" or ln == "":
+            flash("must provide all fields")
+            error=True
+        if user_in_db(un):
+            error=True
+            flash("username already taken")
+        if not error:
+            insert_new_user(fn, ln, un, pw)
+        return render_template("login.html", hotels=hotels, error=error)
 
 
 #Loading Pages
@@ -193,12 +207,15 @@ def hotel_page(chain, hotelname=None):
 
 @app.route("/admin", methods=["GET", "POST"])
 def admin():
+    error = False
     hotels = select_all_hotels()
     if request.method == "GET":
         if "user" in session:
-            return "please logout as a user first"
-        elif "admin" in session:    
-            return render_template("admin.html", hotels=hotels)    
+            flash("please logout first")
+            error = True
+            return render_template("admin_login.html", hotels=hotels, error_login=error)    
+        elif "admin" in session: 
+            return render_template("admin.html", hotels=hotels)
         else:
             return render_template("admin_login.html", hotels=hotels)
     elif request.method == "POST":
@@ -210,21 +227,38 @@ def admin():
             session["date_display"] = date.today().strftime("%D")
             session["hotelid"] = hotel_id_from_admin(un)
             return render_template("admin.html", hotels=hotels)
-        # return redirect(url_for("home"))
+        else:
+            error = True
+            flash("Incorrect Login")
+            if un == "" or pw == "":
+                flash("All fields must be provided")
+            return render_template("admin_login.html", hotels=hotels, error_login=error)
     return render_template("admin_login.html", hotels=hotels)
 
 @app.route("/register_admin", methods=["GET","POST"])
 def register_admin():
+    hotels = select_all_hotels()
+    error=False
     if request.method == "POST":
         hn = request.form["hn"]
         un = request.form["un"]
         pw = request.form["pw"]
         # insert_new_user(fn,ln,un,pw)
-        if not hotel_name_exists(hn):
+        if hotel_name_exists(hn):
+            error=True
+            flash("hotel already taken")
+        if admin_in_db(un):
+            error=True
+            flash("username already taken")
+        if un == "" or pw == "" or hn == "":
+            flash("must provide all fields")
+            error=True
+        if not error:
             insert_new_hotel(hn)
             idn = hotel_id_from_name(hn)
             insert_new_admin(un,pw,idn)
-    return render_template("admin.html", hotels=hotels)
+            return render_template("admin.html", hotels=hotels)
+        return render_template("admin_login.html", error=error, hotels=hotels)
 
 @app.route("/admin_add_loc", methods=["GET","POST"])
 def admin_add_loc():

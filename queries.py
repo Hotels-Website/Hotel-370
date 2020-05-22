@@ -340,24 +340,25 @@ def select_account_info(custid):
         data = c.fetchone()
     return data
 
-def user_in_db(un, pw):
+
+def user_in_db(un, pw=None):
     with create_connection(db) as c:
         c.execute(
             f"""select *
             from customer
             where customer.username = '{un}'
-            and customer.password = '{pw}'
+            {f"and customer.password = '{pw}'" if pw else ""}
             """)
         data = c.fetchone()
     return data
         
-def admin_in_db(un, pw):
+def admin_in_db(un, pw=None):
     with create_connection(db) as c:
         c.execute(
             f"""select *
             from admin
             where admin.username = '{un}'
-            and admin.password = '{pw}'
+            {f"and admin.password = '{pw}'" if pw else ""}
             """)
         data = c.fetchone()
         print(data)
