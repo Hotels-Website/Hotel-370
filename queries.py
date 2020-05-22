@@ -440,7 +440,9 @@ def search_hotel(hotelid, hoteltype, costmin, costmax):
         on room.locationid = location.id
         join hotel
         on location.hotelid = hotel.id
-        where hotel.id = '{hotelid}'
+        left join reservation on reservation.roomid = room.id
+        where reservation.roomid IS NULL
+        and hotel.id = '{hotelid}'
         and room.type = '{hoteltype}'
         and room.price >= '{costmin}'
         and room.price <= '{costmax}'
