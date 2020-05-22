@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>Reservations for: <span style="font-size:.7em;color:darkblue">{{session["user"]}}</span></h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Hotel</th>
+      <th scope="col">Type</th>
+      <th scope="col">Room #</th>
+      <th scope="col">Price</th>
+      <th scope="col">Start Date</th>
+      <th scope="col">End Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if reservations %}
+    {% for name,type,price,startdate,enddate,roomid in reservations %}
+    <tr>
+      <td><i>{{name}}</i></td>
+      <td><i>{{type}}</i></td>
+      <td><i>{{roomid}}</i></td>
+      <td><i>${{price}}</i></td>
+      <td><i>{{startdate}}</i></td>
+      <td><i>{{enddate}}</i></td>
+   </tr>
+   {% endfor %}
+   {% endif %}
+  </tbody>
+</table>
+<input class="button" type="button" onclick="window.location.replace('Details')" value="Return" />
+{% endblock content %}

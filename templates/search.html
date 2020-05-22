@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block content %}
+<style>
+    
+    #outPopUp {
+  position: absolute;
+  width: 600px;
+  height: 200px;
+  z-index: 15;
+  top: 50%;
+  left: 50%;
+  margin: -100px 0 0 -150px;
+  color: black;
+
+}
+</style>
+ <div id="outPopUp" >
+   <form method="post" action="/search">
+
+          <div  style= "position: relative; left: 100px;"><h2>Search</h2></div> 
+     <select name="hotels" id="hotels"> 
+       <option  disabled selected>Select Your Hotel:</option>
+          <option value='Hotel1'>Hotel1</option>;
+          <option value='Hotel2'>Hotel2</option>;
+          <option value='Hotel3'>Hotel3</option>;
+
+        </select> 
+    <select name="hoteltype" id="hoteltype"> 
+          <option  disabled selected>Select Your Type:</option>
+          <option value='Standard'>Standard</option>;
+          <option value='Luxory'>Luxory</option>;
+
+    </select>
+    <br />
+    <input name="costmin" id="costmin" size="15" placeholder="Cost Minimum" required>   
+    <input name="costmax" id="costmax" size="15" placeholder="Cost Maximum" required>   
+    <br />
+    <input type="submit">
+  </form>
+</div>
+{% endblock content %}

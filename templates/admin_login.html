@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block content %}
+<h4>Login</h4>
+<form method="post" action="/admin">
+    <div class="form-group">
+      <label for="un">Username</label>
+      <input type="text" name="un" class="form-control" id="un" aria-describedby="emailHelp">
+      <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+    </div>
+    <div class="form-group">
+      <label for="pw">Password</label>
+      <input type="password" name="pw" class="form-control" id="pw">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+
+  <hr>
+  <h4>Register a hotel and admin login</h4>
+  <form method="post" action="/register_admin">
+    <div class="form-group" >
+      <label for="hn">Hotel Name</label>
+      <input type="text" name="hn" class="form-control" id="hn" aria-describedby="emailHelp">
+      <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+    </div>
+    <div class="form-group">
+      <label for="un">Username</label>
+      <input type="text" name="un" class="form-control" id="un" aria-describedby="emailHelp">
+      <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+    </div>
+    <div class="form-group">
+      <label for="pw">Password</label>
+      <input type="password" name="pw" class="form-control" id="pw">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+
+
+
+{% endblock %}

@@ -226,3 +226,39 @@ git checkout -b [newbranchname] // create and enter new branch
 - 5 - add the changes - git add filename or git add .
 - 6 - create a commit for all those changes - git commit -m "description of changes"
 - 7 - git push
+
+
+# What's left
+1. inform if "location already exists" on admin
+2. make sure location is 0 < i and j  < 100 
+2. book and cancel reservations on search page
+3. book and cancel reservations on hotel page
+4. Display if certain room type is sold out
+5. if not logged in customer prompted to login when attempts to make any reservation
+6. inform customer when name is already taken
+7. data validation - no fields should be blank or improperly formatted 
+7. dollars signs next to prices
+8. search - input selection criteria we think are relevant
+9. sort query by room rates or hotel names
+10. display count of all search results
+11. input date when accessing the website for the first time, reprompted upon subsequent login
+12. report 
+- names 
+- how to access and run
+- admin account credentials
+- screenshots with explanations of our work
+1. Format of team meetings (online?), e.g. videoconference? email? Facebook? etc.
+2. Summary/schematic of the project architecture.
+3. Assignment of project responsibilities to team members, i.e. what did each person do.
+4. A list of the project goals/milestones.
+5. A timeline of progess for the completion of the project milestones.
+6. A list of unit tests and a timetable when each test was successfully passed.
+7. If necessary, what corrective steps were taken if the work fell behind schedule
+
+
+
+What should we add?
+we should have an initialize 1 non-admin user with a booked page
+so we can see if reservations works
+
+

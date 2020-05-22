@@ -43,15 +43,31 @@ li a: hover, .nav:hover .dropbtn{
   background-color: purple;
 }
 
+      .navbar-nav{
+        display:inline-block;
+      }
+
+      .navbar-nav .nav-item{
+        display:inline-block;
+        margin-right: 20px;
+      }
+
     </style>
     <title>{{title}}</title>
   </head>
-  <body>
+  <body onload="getMyStart()" >
     <!-- <nav> -->
+      
       <ul id="main_nav" class="nav">
         <li class="nav-item">
           <a href="/" class="nav-link active" href="#">Home</a>
         </li>
+        <!-- <li class="nav-item">
+          <a href="/search" class="nav-link" href="#">Search</a>
+        </li>
+        <li class="nav-item">
+          <a href="/welcome" class="nav-link" href="#">Welcome</a>
+        </li> -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Our Hotels</a>
           <div class="dropdown-menu">
@@ -60,24 +76,39 @@ li a: hover, .nav:hover .dropbtn{
             {% endfor %}
           </div>
         </li>
-        {% if session["user"] %}
-        <li class="nav-item">
-          <a class="nav-link"  href="/reservations/a">Your Reservations</a>
+        <ul class="navbar-nav ml-md-auto ml-lg-auto ml-sm-auto" style="display:inline-block;margin-right:30px;"> 
+          <li class="nav-item">
+            <a href="/" class="nav-link" href="#"><span id ="startResult"></span></a>
+          </li>  
+        {% if session["user"] %}     
+          <li class="nav-item dropdown" >
+            <a class="nav-link dropdown-toggle" style="" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{session["user"]}}</a>
+          <div class="dropdown-menu dropdown-menu-right" >
+            <a class="dropdown-item" href="/Details">Account Details</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" id="logout" onclick="removeDate()" href="/logout">Logout {{session["user"]}}</a>
+        </div>
         </li>
-        <li class="nav-item">
-          <a class="nav-link"  href="/logout">Logout</a>
+        {% elif session["admin"] %}    
+       
+          <li class="nav-item dropdown" >
+            <a class="nav-link dropdown-toggle" style="" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin: {{session["admin"]}}</a>
+          <div class="dropdown-menu dropdown-menu-right" >
+            <a class="dropdown-item" href="/admin">Admin Panel</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/logout">Logout {{session["user"]}}</a>
+        </div>
         </li>
-        <ul class="navbar-nav ml-md-auto">   
-          <li class="nav-item" style="margin-right:30px;">
-            <a class="nav-link"  href="/reservations">{{session["user"]}}</a>
-          </li>
-        </ul>
-          {% else %}
+        {% else %}
         <li class="nav-item">
           <a class="nav-link"  href="/login">Login</a>
         </li>
+         <li class="nav-item">
+                   <a class="nav-link"  href="/admin">Admin</a>
+           </li>
         {% endif %}
-
+          </ul>
+          
       </ul>
     <!-- </nav> -->
     
@@ -90,8 +121,21 @@ li a: hover, .nav:hover .dropbtn{
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script>
+      function getMyStart()
+      {
+        document.getElementById("startResult").innerHTML=localStorage.getItem("startDate");
+        console.log ("hello");
+      }
+            
+    </script>
     <div class="container">
       {% block content%}{% endblock %}
     </div>
+    <script>
+    function removeDate(){
+      localStorage.removeItem("startDate");
+    }
+    </script>
   </body>
 </html>

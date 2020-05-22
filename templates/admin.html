@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+
 {% block content%}
 <style>
 	.container{
@@ -14,19 +15,236 @@
   }.btn{
     background: purple;
   }
+
+  .card{
+    margin-bottom:20px;
+  }
 </style>
+
 <h1>Admin</h1>
-<h2>Franchises</h2>
+<!--<h2>Franchises</h2> not required, can add if everything else is complete-->
 <h2>Reservations</h2>
 <ul>
-  <li>todays reservations</li>
-  <li>future reservations</li>
+<div class="card">
+<div class="card-body">
+  <h3>Today's Reservations: {{session["date_display"]}}</h3>
+  <table id="table1" class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">First</th>
+        <th scope="col">Last</th>
+        <th scope="col">Check-in Day</th>
+        <th scope="col">Check-out Day</th>
+        <th scope="col">Room Number</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Future Reservations</h3>
+  <table id="table2" class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">First</th>
+        <th scope="col">Last</th>
+        <th scope="col">Check-in Day</th>
+        <th scope="col">Check-out Day</th>
+        <th scope="col">Room Number</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+
+
+<div class="card">
+<div class="card-body">
+  <h3>Add Location</h3>
+    <form method="post" action="/admin_add_loc">
+      <!-- <div class="form-group mb-2">
+        <label for="staticEmail2" class="sr-only">Price</label>
+        <input type="text" readonly class="form-control-plaintext" id="staticEmail2" value="Price">
+      </div> -->
+      <div class="form-group">
+        <p id=hotelidlabel>Hotel Chain #: </p>
+        <p id=hotelid> {{session["hotelid"]}}</p>
+      </div>
+      <div class="form-group">
+        <label for="name">New Hotel Name</label>
+        <input type="text" name="name" class="form-control" id="name" placeholder="(ex. New York, London, Paris, etc.)">
+      </div>
+      <div class="form-group">
+        <label for="iloc">I Coordinate</label>
+        <input type="text" name="iloc" class="form-control" id="iloc" placeholder="(1-100)">
+      </div>
+      <div class="form-group">
+        <label for="jloc">J Coordinate</label>
+        <input type="text" name="jloc" class="form-control" id="jloc" placeholder="(1-100)">
+      </div>
+      <div class="form-group">
+        <label for="cs">Number of Cheap Suites</label>
+        <input type="text" name="cs" class="form-control" id="cs" placeholder="0">
+      </div>
+      <div class="form-group">
+        <label for="cr">Cheap Rate</label>
+        <input type="text" name="cr" class="form-control" id="cr" placeholder="(ex. 100)">
+      </div>
+      <div class="form-group">
+        <label for="es">Number of Expensive Suites</label>
+        <input type="text" name="es" class="form-control" id="es" placeholder="0">
+      </div>
+      <div class="form-group">
+        <label for="er">Expensive Rate</label>
+        <input type="text" name="er" class="form-control" id="er" placeholder="(ex. 500)">
+      </div>
+      <button type="submit" class="btn btn-primary mb-2" id="addLoc">Add Location</button>
+    </form>
+</div>
+</div>
 </ul>
-<h2>Add new Franchise</h2>
-<ol>
-  <li>The administrator must specify the location of the new hotel franchise.</li>
-  <li>The administrator must specify number and types of rooms/suites and rates of the new
-    hotel franchise.</li>
-</ol>
+
+<script type="text/javascript">
+	var tableRef1 = document.getElementById('table1').getElementsByTagName('tbody')[0];
+	var tableRef2 = document.getElementById('table2').getElementsByTagName('tbody')[0];
+  getAllCurrent(tableRef1);
+  getAllFuture(tableRef2);
+
+ 	addLoc.onclick = function()
+  {
+ 	 	  // checks all fields are filled
+ 	  	if(document.getElementById("iloc").value.length == 0||document.getElementById("jloc").value.length == 0||document.getElementById("name").value.length == 0
+ 	  		||document.getElementById("cs").value.length == 0||document.getElementById("cr").value.length == 0||document.getElementById("es").value.length == 0
+ 	  		||document.getElementById("er").value.length == 0)
+ 	  		alert("All fields are required. Try again");
+ 	};
+
+
+  function getAllCurrent(table){
+    const Http1 = new XMLHttpRequest();
+    const url='/getAllCurrent';
+    Http1.open("GET", url);
+    Http1.send();
+
+    Http1.onreadystatechange = () => {
+      if (Http1.readyState === 4){
+        let text = Http1.responseText;
+        if(text === "[]")
+        {
+          // Insert a row in the table at the last row
+            var newRow   = table.insertRow();
+            
+            // Insert a cell in the row at index 0
+            var rowNum  = newRow.insertCell(0);
+
+            // Append a text node to the cell
+            var rowNumText  = document.createTextNode("No Reservations Today");
+            rowNum.appendChild(rowNumText);
+        }
+        else
+        {
+          var data = JSON.parse(text); // current reservations as a parsed JSON object
+          for(var i = 0; i < data.length; i++)
+          {
+            // Insert a row in the table at the last row
+            var newRow   = table.insertRow();
+            
+            // Insert a cell in the row at index 0
+            var rowNum  = newRow.insertCell(0);
+            var firstName  = newRow.insertCell(1);
+            var lastName  = newRow.insertCell(2);
+            var startDate  = newRow.insertCell(3);
+            var endDate  = newRow.insertCell(4);
+            var roomNum  = newRow.insertCell(5);
+
+            // Append a text node to the cell
+            var rowNumText  = document.createTextNode(i);
+            rowNum.appendChild(rowNumText);
+
+            // all these would be filled with values retrieved from out select statement
+            var firstNameText  = document.createTextNode(data[i][0]);
+            firstName.appendChild(firstNameText);
+            var lastNameText  = document.createTextNode(data[i][1]);
+            lastName.appendChild(lastNameText);
+            var startDateText  = document.createTextNode(data[i][2]);
+            startDate.appendChild(startDateText);
+            var endDateText  = document.createTextNode(data[i][3]);
+            endDate.appendChild(endDateText);
+            var roomNumText  = document.createTextNode(data[i][4]);
+            roomNum.appendChild(roomNumText );
+          }
+        }
+      }
+    }
+  }
+
+  function getAllFuture(table){
+    const Http2 = new XMLHttpRequest();
+    const url2='/getAllFuture';
+    Http2.open("GET", url2);
+    Http2.send();
+
+    Http2.onreadystatechange = () => {
+      if (Http2.readyState === 4){
+        let text = Http2.responseText;
+        if(text === "[]")
+        {
+          // Insert a row in the table at the last row
+            var newRow   = table.insertRow();
+            
+            // Insert a cell in the row at index 0
+            var rowNum  = newRow.insertCell(0);
+
+            // Append a text node to the cell
+            var rowNumText  = document.createTextNode("No Future Reservations");
+            rowNum.appendChild(rowNumText);
+        }
+        else
+        {
+          var data = JSON.parse(text); // future reservations as a parsed JSON object
+          for(var i = 0; i < data.length; i++)
+          {
+            // Insert a row in the table at the last row
+            var newRow   = table.insertRow();
+            
+            // Insert a cell in the row at index 0
+            var rowNum  = newRow.insertCell(0);
+            var firstName  = newRow.insertCell(1);
+            var lastName  = newRow.insertCell(2);
+            var startDate  = newRow.insertCell(3);
+            var endDate  = newRow.insertCell(4);
+            var roomNum  = newRow.insertCell(5);
+
+            // Append a text node to the cell
+            var rowNumText  = document.createTextNode(i);
+            rowNum.appendChild(rowNumText);
+
+            // all these would be filled with values retrieved from out select statement
+            var firstNameText  = document.createTextNode(data[i][0]);
+            firstName.appendChild(firstNameText);
+            var lastNameText  = document.createTextNode(data[i][1]);
+            lastName.appendChild(lastNameText);
+            var startDateText  = document.createTextNode(data[i][2]);
+            startDate.appendChild(startDateText);
+            var endDateText  = document.createTextNode(data[i][3]);
+            endDate.appendChild(endDateText);
+            var roomNumText  = document.createTextNode(data[i][4]);
+            roomNum.appendChild(roomNumText);
+          }
+        }
+      }
+    }
+  }
+</script>
 
 {% endblock content%}

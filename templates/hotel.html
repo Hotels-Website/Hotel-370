@@ -1,12 +1,86 @@
 {% extends "layout.html" %}
 {% block content %}
-<h1>Hotel - {{chain}} - {{name}}</h1>
+<h1>{{chain}} - {{name}}</h1>
 <h2>Location - {{location}}</h2>
-<ol>
-  <li>Anyone can view this page</li>
-  <li>Name and Address</li>
-  <li>Rooms and rates</li>
-  <li>display unavailable rooms - with unclickable</li>
-  <li>customers can book and cancel from this page</li>
-</ol>
+
+
+<!-- {{rooms}} -->
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Address</th>
+      <th scope="col">Room#</th>
+      <th scope="col">Room Type</th>
+      <th scope="col">Price</th>
+      <th scope="col">Option</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if rooms %}
+    {% for roomid,locationid,type,price in rooms %}
+    <tr>
+        <td>{{location}}</td>
+        <td>{{roomid}}</td>
+        <td>{{type}}</td>
+        <td>{{price}}</td>
+        <td>
+            <button type="button" id={{roomid}} class="btn btn-sm btn-success book">Book</button>
+        </td>
+        <td>
+            <button type="button" id={{roomid}} class="btn btn-sm btn-danger cancel">Cancel</button>
+        </td>
+    {% endfor %}
+    {% else %}
+    <tr>
+      <th scope="row">
+        There are no rooms available for this hotel
+      </th>
+    </tr>
+    {% endif %}
+  </tbody>
+</table>
+
+<script>
+  var btns = document.querySelectorAll(".book") 
+  var btns2 = document.querySelectorAll(".cancel") 
+  var roomid;
+
+  for(var b of btns){
+    b.addEventListener("click", book)
+  }
+
+
+  for(var c of btns2){
+    c.addEventListener("click", cancel)
+  }
+
+  function book(event){
+    roomid = event.target.getAttribute("id");
+
+    var http = new XMLHttpRequest();
+    var url = '/add_room_to_session';
+    var params = 'roomid='+roomid;
+    http.open('POST', url, true);
+    
+    //Send the proper header information along with the request
+    http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    http.send(params);  
+    location.href = '/add_reservation'
+  }  
+
+  function cancel(event){
+    roomid = event.target.getAttribute("id");
+
+    var http = new XMLHttpRequest();
+    var url = '/add_room_to_session';
+    var params = 'roomid='+roomid;
+    http.open('POST', url, true);
+    
+    //Send the proper header information along with the request
+    http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    http.send(params);  
+    location.href = '/cancel_reservation'
+  }
+
+</script>
 {% endblock %}
