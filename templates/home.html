@@ -58,26 +58,23 @@
           <div id="outPopUp">
             <form method="post" action="/search">
 
-              <select name="hotels" id="hotels">
-                <option disabled selected>Select Your Hotel:</option>
-                <option value='Hotel1'>Hotel1</option>
-                <option value='Hotel2'>Hotel2</option>
-                <option value='Hotel3'>Hotel3</option>
+              <select name="hotelname" id="hotelname">
+                <option value='Marriot'>Marriot</option>
+                <option value='Best Western'>Best Western</option>
+                <option value='Hilton'>Hilton</option>
 
               </select>
               <select name="hoteltype" id="hoteltype">
-                <option disabled selected>Select Your Type:</option>
-                <option value='Standard'>Standard</option>
-                <option value='Luxory'>Luxory</option>
+                <option value='Cheap'>Cheap</option>
+                <option value='Expensive'>Expensive</option>
 
               </select>
               <select name="cost" id="cost">
-                <option disabled selected>Select Your Price Range:</option>
-                <option value='<30'><30</option>
-                <option value='31-50'>31-50</option>             
-                <option value='51-70'>51-70</option>             
-                <option value='71-90'>71-90</option>             
-                <option value='>90'>>90</option>             
+                <option value='<50'><50</option>
+                <option value='51-100'>51-100</option>             
+                <option value='101-200'>101-200</option>             
+                <option value='201-500'>201-500</option>             
+                <option value='500+'>500+</option>             
 
               </select>
               <br />
@@ -94,31 +91,38 @@
 <table class="table">
   <thead>
     <tr>
-      <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
+      <td>Search results found: {{session['resultLen']}}</td>
+    </tr>
+    <tr>
+      <th scope="col">RoomNum</th>
+      <th scope="col">Location</th>
+      <th scope="col">Type</th>
+      <th scope="col">Price</th>
+      <th scope="col">Option</th>
     </tr>
   </thead>
   <tbody>
+    {% if session['result'] %}
+    {% for roomid,name,type,price in session['result'] %}
     <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
+        <td>{{roomid}}</td>
+        <td>{{name}}</td>
+        <td>{{type}}</td>
+        <td>{{price}}</td>
+        <td>
+            <button type="button" id={{roomid}} class="btn btn-sm btn-success book">Book</button>
+        </td>
+        <td>
+            <button type="button" id={{roomid}} class="btn btn-sm btn-danger cancel">Cancel</button>
+        </td>
+    {% endfor %}
+    {% else %}
     <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
+      <th scope="row">
+        Empty
+      </th>
     </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
-    </tr>
+    {% endif %}
   </tbody>
 </table>
   </div>
@@ -143,15 +147,15 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="dateModalTitle">Set a Date</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
+          <!-- <span aria-hidden="true">&times;</span> -->
         </button>
       </div>
       <div class="modal-body">
         <input type="date" id="startDate" />
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
         <button type="button" class="btn btn-primary" value="click" onclick="passValues()" data-dismiss="modal">Submit
           The Start Date</button>
       </div>
@@ -166,9 +170,13 @@
     getMyStart();
   }
 
-  {% if not session["date"] %}
-  $('#dateModal').modal('show');
-   {% endif %}
+  // {% if not session["date"] %}
+  if (localStorage.getItem("startDate") == null){
+    $('#dateModal').modal('show');
+  }
+
+
+  //  {% endif %}
 
 
   const map = document.getElementById("map")
@@ -242,6 +250,47 @@
       // data.push([100,100,100,100]);
       renderMap(data)
     }
+  }
+
+  var btns = document.querySelectorAll(".book") 
+  var btns2 = document.querySelectorAll(".cancel") 
+  var roomid;
+
+  for(var b of btns){
+    b.addEventListener("click", book)
+  }
+
+
+  for(var c of btns2){
+    c.addEventListener("click", cancel)
+  }
+
+  function book(event){
+    roomid = event.target.getAttribute("id");
+
+    var http = new XMLHttpRequest();
+    var url = '/add_room_to_session';
+    var params = 'roomid='+roomid;
+    http.open('POST', url, true);
+    
+    //Send the proper header information along with the request
+    http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    http.send(params);  
+    location.href = '/add_reservation'
+  }  
+
+  function cancel(event){
+    roomid = event.target.getAttribute("id");
+
+    var http = new XMLHttpRequest();
+    var url = '/add_room_to_session';
+    var params = 'roomid='+roomid;
+    http.open('POST', url, true);
+    
+    //Send the proper header information along with the request
+    http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    http.send(params);  
+    location.href = '/cancel_reservation'
   }
 </script>
 {% endblock %}

@@ -340,24 +340,25 @@ def select_account_info(custid):
         data = c.fetchone()
     return data
 
-def user_in_db(un, pw):
+
+def user_in_db(un, pw=None):
     with create_connection(db) as c:
         c.execute(
             f"""select *
             from customer
             where customer.username = '{un}'
-            and customer.password = '{pw}'
+            {f"and customer.password = '{pw}'" if pw else ""}
             """)
         data = c.fetchone()
     return data
         
-def admin_in_db(un, pw):
+def admin_in_db(un, pw=None):
     with create_connection(db) as c:
         c.execute(
             f"""select *
             from admin
             where admin.username = '{un}'
-            and admin.password = '{pw}'
+            {f"and admin.password = '{pw}'" if pw else ""}
             """)
         data = c.fetchone()
         print(data)
@@ -431,17 +432,17 @@ def drop_table(table):
     with create_connection(db) as c:
         c.execute(f"drop table if exists {table}")
         
-def search_hotel(hotelname, hoteltype, costmin, costmax):
+def search_hotel(hotelid, hoteltype, costmin, costmax):
     with create_connection(db) as c:
         c.execute(f"""
-        select * 
+        select room.id, location.name, room.type, room.price 
         from room
         join location
         on room.locationid = location.id
         join hotel
         on location.hotelid = hotel.id
-        where hotel.name = '{hotelname}'
-        and hotel.type = '{hoteltype}'
+        where hotel.id = '{hotelid}'
+        and room.type = '{hoteltype}'
         and room.price >= '{costmin}'
         and room.price <= '{costmax}'
         """)

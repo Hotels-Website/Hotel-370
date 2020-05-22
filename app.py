@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, render_template, session, request, g, send_from_directory,jsonify
+from flask import Flask, redirect, url_for, render_template, session, request, g, send_from_directory,jsonify, flash
 from actions import *
 from queries import *
 from datetime import date
@@ -30,7 +30,7 @@ def reservationdetails():
     if "user" in session:
         username = session["userid"]
         data = select_reservations_by_custid_res(username)
-        return render_template("ReservationDetails.html", reservations=data)
+        return render_template("ReservationDetails.html", hotels=hotels, reservations=data)
     return render_template("Details.html", hotels=hotels)
 
 @app.route("/welcome")
@@ -39,13 +39,33 @@ def welcome():
 
 @app.route("/search", methods=["GET","POST"])
 def search():
+    hotel2s = select_all_hotels()
+    if not 'resultLen' in session:
+        session['resultLen'] = 0
+    else:
+        session.pop("resultLen", None)
+
     if request.method == "POST":
-        hotelname = request.form["hotels"]
+        hotelname = request.form["hotelname"]
         hoteltype = request.form["hoteltype"]
-        costmin = request.form["costmin"]
-        costmax = request.form["costmax"]
-        return json.dumps(search_hotel(hotelname, hoteltype, costmin, costmax))
-    return render_template("search.html")
+        cost = request.form["cost"]
+        hotelid = hotel_id_from_name(hotelname)
+        if cost == "<50":
+            costmin = 0
+            costmax = 50
+        elif cost == "51-100":
+            costmin = 51
+            costmax = 100
+        elif cost == "101-200":
+            costmin = 101
+            costmax = 200
+        else:
+            costmin = 201
+            costmax = 1000000000000
+        session['result'] = (search_hotel(hotelid, hoteltype, costmin, costmax))
+        session['resultLen'] = len((session['result'])) + 10
+        return render_template("home.html", hotels=hotel2s)
+    return render_template("home.html", hotels=hotel2s)
 
 
 
@@ -73,7 +93,13 @@ def login():
             session["date"] = date.today()
             session["date_display"] = date.today().strftime("%D")
             return redirect(url_for("home"))
-    return render_template("login.html", hotels=hotels)
+        else:
+            error_login = True
+            flash("username or password is incorrect")
+        if un == "" or pw == "":
+            flash("must provide all fields")
+        
+    return render_template("login.html", hotels=hotels, error_login=True)
     
 
 @app.route("/logout")
@@ -90,14 +116,22 @@ def logout():
 
 @app.route("/register", methods=["GET","POST"])
 def register():
+    error = False
     hotels = select_all_hotels()
     if request.method == "POST":
         fn = request.form["fn"]
         ln = request.form["ln"]
         un = request.form["un"]
         pw = request.form["pw"]
-        insert_new_user(fn, ln, un, pw)
-    return render_template("login.html", hotels=hotels)
+        if un == "" or pw == "" or fn == "" or ln == "":
+            flash("must provide all fields")
+            error=True
+        if user_in_db(un):
+            error=True
+            flash("username already taken")
+        if not error:
+            insert_new_user(fn, ln, un, pw)
+        return render_template("login.html", hotels=hotels, error=error)
 
 
 #Loading Pages
@@ -141,6 +175,7 @@ def cancel_reservation():
                 return render_template("ReservationDetails.html",hotels=data)
             return render_template("home.html",hotels=data)
         return render_template("login.html",hotels=data) 
+    return render_template("login.html",hotels=data) 
 
 
 @app.route("/reservations")
@@ -168,7 +203,7 @@ def hotel_page(chain, hotelname=None):
                     chain=chain,
                     hotels=data,
                     chain_id = d[0],
-                    rooms = select_all_available_rooms_by_chain(d[0])
+                    rooms = select_all_rooms_by_chain(d[0])
                 )
         return redirect(url_for("home"), d=data)
     else:
@@ -177,12 +212,15 @@ def hotel_page(chain, hotelname=None):
 
 @app.route("/admin", methods=["GET", "POST"])
 def admin():
+    error = False
     hotels = select_all_hotels()
     if request.method == "GET":
         if "user" in session:
-            return "please logout as a user first"
-        elif "admin" in session:    
-            return render_template("admin.html", hotels=hotels)    
+            flash("please logout first")
+            error = True
+            return render_template("admin_login.html", hotels=hotels, error_login=error)    
+        elif "admin" in session: 
+            return render_template("admin.html", hotels=hotels)
         else:
             return render_template("admin_login.html", hotels=hotels)
     elif request.method == "POST":
@@ -194,21 +232,38 @@ def admin():
             session["date_display"] = date.today().strftime("%D")
             session["hotelid"] = hotel_id_from_admin(un)
             return render_template("admin.html", hotels=hotels)
-        # return redirect(url_for("home"))
+        else:
+            error = True
+            flash("Incorrect Login")
+            if un == "" or pw == "":
+                flash("All fields must be provided")
+            return render_template("admin_login.html", hotels=hotels, error_login=error)
     return render_template("admin_login.html", hotels=hotels)
 
 @app.route("/register_admin", methods=["GET","POST"])
 def register_admin():
+    hotels = select_all_hotels()
+    error=False
     if request.method == "POST":
         hn = request.form["hn"]
         un = request.form["un"]
         pw = request.form["pw"]
         # insert_new_user(fn,ln,un,pw)
-        if not hotel_name_exists(hn):
+        if hotel_name_exists(hn):
+            error=True
+            flash("hotel already taken")
+        if admin_in_db(un):
+            error=True
+            flash("username already taken")
+        if un == "" or pw == "" or hn == "":
+            flash("must provide all fields")
+            error=True
+        if not error:
             insert_new_hotel(hn)
             idn = hotel_id_from_name(hn)
             insert_new_admin(un,pw,idn)
-    return render_template("admin.html", hotels=hotels)
+            return render_template("admin.html", hotels=hotels)
+        return render_template("admin_login.html", error=error, hotels=hotels)
 
 @app.route("/admin_add_loc", methods=["GET","POST"])
 def admin_add_loc():
