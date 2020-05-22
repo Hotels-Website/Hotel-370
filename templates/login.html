@@ -13,6 +13,13 @@
   }
 </style>
 <h4>Login</h4>
+{% if error_login %}
+{% with messages = get_flashed_messages() %}
+{% for m in messages %}
+<h6 style="color:red; font-weight:bold;">{{m}}</h6>
+{% endfor %}
+{% endwith %}
+{% endif %}
 <form method="post" action="/login">
     <div class="form-group">
       <label for="un">Username</label>
@@ -28,6 +35,13 @@
 
   <hr>
   <h4>Register</h4>
+  {% if error %}
+  {% with messages = get_flashed_messages() %}
+  {% for m in messages %}
+  <h6 style="color:red; font-weight:bold;">{{m}}</h6>
+  {% endfor %}
+  {% endwith %}
+  {% endif %}
   <form method="post" action="/register">
     <div class="form-group" >
       <label for="fn">Firstname</label>
