@@ -39,13 +39,27 @@ def welcome():
 
 @app.route("/search", methods=["GET","POST"])
 def search():
+    hotels = select_all_hotels()
     if request.method == "POST":
-        hotelname = request.form["hotels"]
+        hotelid = hotel_id_from_name(request.form["hotels"])
         hoteltype = request.form["hoteltype"]
-        costmin = request.form["costmin"]
-        costmax = request.form["costmax"]
-        return json.dumps(search_hotel(hotelname, hoteltype, costmin, costmax))
-    return render_template("search.html")
+        cost = request.form["cost"]
+        if cost == "<50":
+            costmin = 0
+            costmax = 50
+        elif cost == "51-100":
+            costmin = 51
+            costmax = 100
+        elif cost == "101-200":
+            costmin = 101
+            costmax = 200
+        else:
+            costmin = 201
+            costmax = 1000000000000
+        session['result'] = (search_hotel(hotelid, hoteltype, costmin, costmax))
+        print(session['result'])
+        return render_template("home.html", hotels=hotels)
+    return render_template("home.html", hotels=hotels)
 
 
 
@@ -141,6 +155,7 @@ def cancel_reservation():
                 return render_template("ReservationDetails.html",hotels=data)
             return render_template("home.html",hotels=data)
         return render_template("login.html",hotels=data) 
+    return render_template("login.html",hotels=data) 
 
 
 @app.route("/reservations")
