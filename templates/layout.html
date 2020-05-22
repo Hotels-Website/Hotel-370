@@ -35,12 +35,12 @@
         <li class="nav-item">
           <a href="/" class="nav-link active" href="#">Home</a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a href="/search" class="nav-link" href="#">Search</a>
         </li>
         <li class="nav-item">
           <a href="/welcome" class="nav-link" href="#">Welcome</a>
-        </li>
+        </li> -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Our Hotels</a>
           <div class="dropdown-menu">
@@ -59,7 +59,7 @@
           <div class="dropdown-menu dropdown-menu-right" >
             <a class="dropdown-item" href="/Details">Account Details</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/logout">Logout {{session["user"]}}</a>
+            <a class="dropdown-item" id="logout" onclick="removeDate()" href="/logout">Logout {{session["user"]}}</a>
         </div>
         </li>
         {% elif session["admin"] %}    
@@ -105,5 +105,10 @@
     <div class="container">
       {% block content%}{% endblock %}
     </div>
+    <script>
+    function removeDate(){
+      localStorage.removeItem("startDate");
+    }
+    </script>
   </body>
 </html>
