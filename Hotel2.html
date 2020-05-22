@@ -1,5 +1,70 @@
-{% extends "layout.html" %}
-{% block content %}
+<!DOCTYPE html>
+<!-- saved from url=(0022)http://127.0.0.1:5000/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Required meta tags -->
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="./Hotel2_files/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+      *{
+  box-sizing: border-box;
+}
+body{
+    Margin:0;
+    Padding:0;
+    background:url('https://img.grouponcdn.com/deal/2bQpLzgdVdXaZ4ACrbnobyHQX1gD/2b-960x576/v1/c700x420.jpg');
+    Background-size:cover;
+    
+}
+      #main_nav{
+        background-color: #333;
+      }
+
+      #main_nav .nav-link {
+        color:white;
+      }
+
+    </style>
+    <title></title>
+  </head>
+  <body>
+    <!-- <nav> -->
+      <ul id="main_nav" class="nav">
+        <li class="nav-item">
+          <a href="http://127.0.0.1:5000/" class="nav-link active">Home</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="http://127.0.0.1:5000/#" role="button" aria-haspopup="true" aria-expanded="false">Our Hotels</a>
+          <div class="dropdown-menu">
+            
+            <a class="dropdown-item" href="http://127.0.0.1:5000/hotel/mariott/New%20York">mariott - New York</a>
+            
+            <a class="dropdown-item" href="http://127.0.0.1:5000/hotel/mariott/San%20Francisco">mariott - San Francisco</a>
+            
+          </div>
+        </li>
+        
+        <li class="nav-item">
+          <a class="nav-link" href="http://127.0.0.1:5000/login">Login</a>
+        </li>
+        
+
+      </ul>
+    <!-- </nav> -->
+    
+
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="./Hotel2_files/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="./Hotel2_files/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="./Hotel2_files/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <div class="container">
+      
 <style>
   h4{
     display:inline-block;
@@ -20,22 +85,13 @@
     position:absolute;
     background-color:green;
   }
-  .card{
-    background: #333;
-    color: white;
-  }.container{
-    color: white;
-    text-align: center;
-    border: 0px;
-    border-radius: 10px;
-  }
-  .btn{
-    background: purple;
-  }
 
 </style>
 <div class="container">
-  <div class="row">
+  <div class="row" style="
+    color: white;
+    text-align: center;
+">
     <div class="col-lg-12">
       <h1 style="margin:10px;">Welcome</h1>
     </div>
@@ -43,18 +99,26 @@
 
   <div class="row">
     <div class="col-lg-6">
-      <div id="top-card" class="card">
+      <div id="top-card" class="card" style="
+    background: #333;
+    color: white;
+">
         <h3 class="card-header">Find a hotel for your next stay</h3>
           <div class="card-body">
-            <div id="map" class='jumbotron jumbotron-fluid'></div>
+            <div id="map" class="jumbotron jumbotron-fluid"></div>
             <!-- <h5 class="card-title">Special title treatment</h5>
               <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> -->
-              <button id="getLocations" class="btn btn-primary">Find Locations</button>
+              <button id="getLocations" class="btn btn-primary" style="
+    background: rebeccapurple;
+">Find Locations</button>
           </div>
       </div>
     </div> 
     <div class="col-lg-6">       
-      <div id="top-card" class="card">
+      <div id="top-card" class="card" style="
+    background: #333;
+    color: white;
+">
         <h3 class="card-header">Find a room</h3>
         <div class="card-body">
           <form>
@@ -107,7 +171,7 @@
       <div class="modal-header">
         <h5 class="modal-title" id="dateModalTitle">Modal title</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+          <span aria-hidden="true">×</span>
         </button>
       </div>
       <div class="modal-body">
@@ -122,9 +186,7 @@
 </div>
 
 <script>
-  {% if not session["date"] %}
-    $('#dateModal').modal('show');
-  {% endif %}
+  
 
   
   const map = document.getElementById("map")
@@ -201,4 +263,7 @@
 }
 
 </script>
-{% endblock %}
+
+    </div>
+  
+</body></html>

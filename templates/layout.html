@@ -8,13 +8,40 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <style>
+      *{
+  box-sizing: border-box;
+}
+body{
+    Margin:0;
+    Padding:0;
+    background:url('https://img.grouponcdn.com/deal/2bQpLzgdVdXaZ4ACrbnobyHQX1gD/2b-960x576/v1/c700x420.jpg');
+    Background-size:cover;
+    
+}
       #main_nav{
-        background-color:thistle;
+        background-color: #333;
       }
 
       #main_nav .nav-link {
         color:white;
-      }
+      }li {
+  float: left;
+}ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}li a, .dropbtn {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+li a: hover, .nav:hover .dropbtn{
+  background-color: purple;
+}
 
     </style>
     <title>{{title}}</title>
