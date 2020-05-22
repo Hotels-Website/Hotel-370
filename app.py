@@ -30,7 +30,7 @@ def reservationdetails():
     if "user" in session:
         username = session["userid"]
         data = select_reservations_by_custid_res(username)
-        return render_template("ReservationDetails.html", reservations=data)
+        return render_template("ReservationDetails.html", hotels=hotels, reservations=data)
     return render_template("Details.html", hotels=hotels)
 
 @app.route("/welcome")

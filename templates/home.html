@@ -144,15 +144,15 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="dateModalTitle">Set a Date</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
+          <!-- <span aria-hidden="true">&times;</span> -->
         </button>
       </div>
       <div class="modal-body">
         <input type="date" id="startDate" />
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
         <button type="button" class="btn btn-primary" value="click" onclick="passValues()" data-dismiss="modal">Submit
           The Start Date</button>
       </div>
@@ -167,9 +167,13 @@
     getMyStart();
   }
 
-  {% if not session["date"] %}
-  $('#dateModal').modal('show');
-   {% endif %}
+  // {% if not session["date"] %}
+  if (localStorage.getItem("startDate") == null){
+    $('#dateModal').modal('show');
+  }
+
+
+  //  {% endif %}
 
 
   const map = document.getElementById("map")
