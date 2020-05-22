@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<!-- saved from url=(0081)file:///Users/tiara/Desktop/Hotel_Project_Modified/Welcome_page/Welcome_Page.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+	<title> Hotel's Home Page </title>
+	<link rel="stylesheet" type="text/css" base="" href="file:///Users/tiara/Desktop/Hotel_Project_Modified/Admin_page/css/style.css" <="" head="">
+</head><body style="background: url(/Users/tiara/Desktop/Hotel_Project_Modified/Admin_page/niceHotel.jpg);">
+	
+		{% extends "layout.html" %}
+{% block content %}
+<style>
+  h4{
+    display:inline-block;
+  }
+
+  #map{
+    min-height:400px;
+    position:relative;
+  }
+
+
+  .dot{
+    height:10px;
+    width:10px;
+    margin:-5px -5px;
+    border-radius:100px;
+    border:black solid 1px;
+    position:absolute;
+    background-color:green;
+  }
+
+</style>
+<div class="container">
+  <div class="row" style="
+    color: white;
+">
+    <div class="col-lg-12">
+      <h1 style="margin:10px;">Welcome</h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6">
+      <div id="top-card" class="card">
+        <h3 class="card-header" style="
+    color: white;
+">Find a hotel for your next stay</h3>
+          <div class="card-body">
+            <div id="map" class="jumbotron jumbotron-fluid"></div>
+            <!-- <h5 class="card-title">Special title treatment</h5>
+              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> -->
+              <button id="getLocations" class="btn btn-primary">Find Locations</button>
+          </div>
+      </div>
+    </div> 
+    <div class="col-lg-6" style="
+    background: black;
+    margin: 0px 0px 0px 550px;
+    border-radius: 10px;
+    position: absolute;
+    bottom: 100px;
+    width: 500px;
+    height: 370px;
+">       
+      <div id="top-card" class="card">
+        <h3 class="card-header" style="
+    color: white;
+    text-align: center;
+    font-size: 25px;
+">Book a room</h3>
+        <div class="card-body" style="
+    color: white;
+    position: absolute;
+">
+          <form>
+            <div class="form-row">
+              <div class="col-sm-6">
+                <h5 class="text-center">check in</h5>
+                <div class="form-row" style="
+    /* width: 220px; */
+    /* border: none; */
+    /* border-radius: 3px; */
+    /* outline: 0px; */
+    /* padding: 7px; */
+">
+                  <div class="form-group col-sm-6" style="
+    /* width: 220px; */
+    /* border: none; */
+    /* border-radius: 3px; */
+    /* outline: 0px; */
+    /* padding: 7px; */
+    /* width: 220px; */
+    border: none;
+    border-radius: 3px;
+    outline: 0px;
+    padding: 7px;
+    margin: 0px;
+">
+                    <label for="checkin-date">Date</label>
+                    <input type="text" class="form-control" id="checkin-date" style="
+    width: 220px;
+    border: none;
+    border-radius: 3px;
+    outline: 0px;
+    padding: 7px;
+    margin: 0px;
+">
+                  </div>
+                  <div class="form-group col-sm-6" style="
+    margin: 5px;
+">
+                    <label for="checkin-time">Time</label>
+                    <input type="text" class="form-control" id="checkin-time" style="
+    width: 220px;
+    border: none;
+    border-radius: 3px;
+    outline: 0px;
+    padding: 7px;
+    margin: 1px;
+">
+                  </div>
+                </div>
+              </div>
+                <div class="col-sm-6">
+                  <h5 class="text-center">check out</h5>
+                  <div class="form-row">
+                    <div class="form-group col-sm-6" style="
+    /* width: 220px; */
+    /* border: none; */
+    /* border-radius: 3px; */
+    /* outline: 0px; */
+    /* padding: 7px; */
+">
+                      <label for="checkin-date">Date</label>
+                      <input type="text" class="form-control" id="checkin-date" style="
+    width: 220px;
+    border: none;
+    border-radius: 3px;
+    outline: 0px;
+    padding: 7px;
+    margin: 5px;
+">
+                    </div>
+                    <div class="form-group col-sm-6">
+                      <label for="checkin-time">Time</label>
+                      <input type="text" class="form-control" id="checkin-time" style="
+    width: 220px;
+    border: none;
+    border-radius: 3px;
+    outline: 0px;
+    padding: 7px;
+    margin: 5px;
+">
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dateModal">
+  Launch demo modal
+</button> -->
+
+<!-- Modal -->
+<div class="modal fade" id="dateModal" tabindex="-1" role="dialog" aria-labelledby="dateModalTitle" aria-hidden="true" style="
+    margin: 0px 0px 0px 550px;
+    background: black;
+    color: white;
+    margin: 0px 0px 0px 550px;
+    background: black;
+    margin: 0px 0px 0px 550px;
+    border-radius: 10px;
+    position: absolute;
+    bottom: 5px;
+    width: 500px;
+    /* height: 370px; */
+">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="dateModalTitle" style="
+">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  {% if not session["date"] %}
+    $('#dateModal').modal('show');
+  {% endif %}
+
+  
+  const map = document.getElementById("map")
+  renderMap([])
+
+  const locations = document.getElementById("locations")
+  const btn = document.getElementById("getLocations")
+  btn.addEventListener("click",getAllLocations)
+  
+  function renderMap(data){
+    const mapstyle = window.getComputedStyle(map);
+    let width = mapstyle.getPropertyValue("width");
+    let height = mapstyle.getPropertyValue("height");
+    width = parseInt(width.slice(0, -2))
+    height = parseInt(height.slice(0, -2))
+
+    removeDots()
+
+    for(var d of data){
+      var [chain, hotel, i, j] = d;
+      var node = document.createElement("a");
+      node.className = "dot";
+      node.href = "/hotel/"+chain+"/"+hotel;
+      node.title = chain+ " - "+ hotel +" @ location: ("+i+", "+j+")";
+      var i_ = parseInt(i) * .01; 
+      var j_ = parseInt(j) * .01;
+      node.style.top = parseInt(i_ * height).toString()+"px";
+      node.style.left = parseInt(j_ * width).toString()+"px";
+      map.appendChild(node);
+    }
+  }
+
+
+  function removeDots(){
+    let dots = document.querySelectorAll(".dot")
+    for(var dot of dots){
+      dot.remove();
+    }
+  }
+
+  function searchQuery(){
+    var http = new XMLHttpRequest();
+    var url = '/search';
+    var params = buildQuery();
+    http.open('POST', url, true);
+
+    //Send the proper header information along with the request
+    http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+    http.onreadystatechange = function() {//Call a function when the state changes.
+        if(http.readyState == 4 && http.status == 200) {
+            alert(http.responseText);
+        }
+    }
+    http.send(params);                
+  }
+  
+  function getAllLocations(){
+    const Http = new XMLHttpRequest();
+    const url='/getAllLocations';
+    Http.open("GET", url);
+    Http.send();
+
+    Http.onreadystatechange = (e) => {
+        var text = Http.responseText;
+        console.log(text);
+        console.log(JSON.parse(text));
+        data = JSON.parse(text);
+        //for testing the scaling
+        // data.push([0,0,0,0]);
+        // data.push([100,100,100,100]);
+        renderMap(data)
+    }
+}
+
+</script>
+{% endblock %}
+	
+</body></html>

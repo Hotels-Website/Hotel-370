@@ -1,0 +1,153 @@
+<!doctype html>
+<html>
+<head>
+	<title> Hotel's Layout Page </title>
+	<link rel = "stylesheet" type ="text/css" base href ="./css/style.css"
+</head>
+<style>
+*{
+  box-sizing: border-box;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+.topnav{
+       background: linear-gradient(#7572ec,#585e8);
+       overflow: hidden;
+}
+
+li {
+  float: left;
+}
+
+li a, .dropbtn {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover, .dropdown:hover .dropbtn {
+  background-color: red;
+}
+
+li.dropdown {
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1;}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+a.active{
+	background:linear-gradient(#a60813,#000);
+}
+
+.search-container{
+	float:right;
+	margin-right:20px;
+}
+input[type=text]{
+	padding: 6px;
+	margin-top:16px;
+	font-size:17px;
+	border: none;
+
+}2
+</style>
+</head>
+<body style="background: url(/Users/tiara/Desktop/Hotel_Project_Modified/Layout_page/niceHotel.jpg);">
+
+ <ul class="navbar-nav ml-md-auto ml-lg-auto ml-sm-auto" style="display:inline-block;margin-right:30px;">   
+        {% if session["user"] %}
+
+   <li class="nav-item">
+    <a href="javascript:void(0)" class="dropbtn">Home</a>
+    <div class="dropdown-content">
+      <a href="/" class="nav-link active" href="#">Home</a
+    </div>
+  </li>
+
+
+     <li class="nav-item">
+    <a href="javascript:void(0)" class="dropbtn">Our Hotels</a>
+    <div class="dropdown-content">
+      {% for _,_,name,_,_,_,chain in hotels %}
+            <a class="dropdown-item" href="/hotel/{{chain}}/{{name}}">{{chain}} - {{name}}</a>
+            {% endfor %}      
+    </div>
+
+</li>
+
+          <li class="nav-item">
+            <a href="/" class="nav-link" href="#">{{ session["date_display"]}}</a>
+          </li>
+          <li class="nav-item dropdown" >
+            <a class="nav-link dropdown-toggle" style="" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{session["user"]}}</a>
+          <div class="dropdown-menu dropdown-menu-right" >
+            <a class="dropdown-item" href="/reservations">Reservations</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/logout">Logout {{session["user"]}}</a>
+        </div>
+        </li>
+        {% elif session["admin"] %}    
+          <li class="nav-item">
+            <a href="/" class="nav-link" href="#">{{ session["date_display"]}}</a>
+          </li>
+          <li class="nav-item dropdown" >
+            <a class="nav-link dropdown-toggle" style="" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin: {{session["admin"]}}</a>
+          <div class="dropdown-menu dropdown-menu-right" >
+            <a class="dropdown-item" href="/admin">Admin Panel</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/logout">Logout {{session["user"]}}</a>
+        </div>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link"  href="/login">Login</a>
+        </li>
+        {% endif %}
+          </ul>
+          
+      </ul>
+    <!-- </nav> -->
+    
+
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <div class="container">
+      {% block content%}{% endblock %}
+    </div>
+  </body>
+</html>

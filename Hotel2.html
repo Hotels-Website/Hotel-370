@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<!-- saved from url=(0022)http://127.0.0.1:5000/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Required meta tags -->
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="./Hotel2_files/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+      *{
+  box-sizing: border-box;
+}
+body{
+    Margin:0;
+    Padding:0;
+    background:url('https://img.grouponcdn.com/deal/2bQpLzgdVdXaZ4ACrbnobyHQX1gD/2b-960x576/v1/c700x420.jpg');
+    Background-size:cover;
+    
+}
+      #main_nav{
+        background-color: #333;
+      }
+
+      #main_nav .nav-link {
+        color:white;
+      }
+
+    </style>
+    <title></title>
+  </head>
+  <body>
+    <!-- <nav> -->
+      <ul id="main_nav" class="nav">
+        <li class="nav-item">
+          <a href="http://127.0.0.1:5000/" class="nav-link active">Home</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="http://127.0.0.1:5000/#" role="button" aria-haspopup="true" aria-expanded="false">Our Hotels</a>
+          <div class="dropdown-menu">
+            
+            <a class="dropdown-item" href="http://127.0.0.1:5000/hotel/mariott/New%20York">mariott - New York</a>
+            
+            <a class="dropdown-item" href="http://127.0.0.1:5000/hotel/mariott/San%20Francisco">mariott - San Francisco</a>
+            
+          </div>
+        </li>
+        
+        <li class="nav-item">
+          <a class="nav-link" href="http://127.0.0.1:5000/login">Login</a>
+        </li>
+        
+
+      </ul>
+    <!-- </nav> -->
+    
+
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="./Hotel2_files/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="./Hotel2_files/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="./Hotel2_files/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <div class="container">
+      
+<style>
+  h4{
+    display:inline-block;
+  }
+
+  #map{
+    min-height:400px;
+    position:relative;
+  }
+
+
+  .dot{
+    height:10px;
+    width:10px;
+    margin:-5px -5px;
+    border-radius:100px;
+    border:black solid 1px;
+    position:absolute;
+    background-color:green;
+  }
+
+</style>
+<div class="container">
+  <div class="row" style="
+    color: white;
+    text-align: center;
+">
+    <div class="col-lg-12">
+      <h1 style="margin:10px;">Welcome</h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6">
+      <div id="top-card" class="card" style="
+    background: #333;
+    color: white;
+">
+        <h3 class="card-header">Find a hotel for your next stay</h3>
+          <div class="card-body">
+            <div id="map" class="jumbotron jumbotron-fluid"></div>
+            <!-- <h5 class="card-title">Special title treatment</h5>
+              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> -->
+              <button id="getLocations" class="btn btn-primary" style="
+    background: rebeccapurple;
+">Find Locations</button>
+          </div>
+      </div>
+    </div> 
+    <div class="col-lg-6">       
+      <div id="top-card" class="card" style="
+    background: #333;
+    color: white;
+">
+        <h3 class="card-header">Find a room</h3>
+        <div class="card-body">
+          <form>
+            <div class="form-row">
+              <div class="col-sm-6">
+                <h5 class="text-center">check in</h5>
+                <div class="form-row">
+                  <div class="form-group col-sm-6">
+                    <label for="checkin-date">Date</label>
+                    <input type="text" class="form-control" id="checkin-date">
+                  </div>
+                  <div class="form-group col-sm-6">
+                    <label for="checkin-time">Time</label>
+                    <input type="text" class="form-control" id="checkin-time">
+                  </div>
+                </div>
+              </div>
+                <div class="col-sm-6">
+                  <h5 class="text-center">check out</h5>
+                  <div class="form-row">
+                    <div class="form-group col-sm-6">
+                      <label for="checkin-date">Date</label>
+                      <input type="text" class="form-control" id="checkin-date">
+                    </div>
+                    <div class="form-group col-sm-6">
+                      <label for="checkin-time">Time</label>
+                      <input type="text" class="form-control" id="checkin-time">
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dateModal">
+  Launch demo modal
+</button> -->
+
+<!-- Modal -->
+<div class="modal fade" id="dateModal" tabindex="-1" role="dialog" aria-labelledby="dateModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="dateModalTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  
+
+  
+  const map = document.getElementById("map")
+  renderMap([])
+
+  const locations = document.getElementById("locations")
+  const btn = document.getElementById("getLocations")
+  btn.addEventListener("click",getAllLocations)
+  
+  function renderMap(data){
+    const mapstyle = window.getComputedStyle(map);
+    let width = mapstyle.getPropertyValue("width");
+    let height = mapstyle.getPropertyValue("height");
+    width = parseInt(width.slice(0, -2))
+    height = parseInt(height.slice(0, -2))
+
+    removeDots()
+
+    for(var d of data){
+      var [chain, hotel, i, j] = d;
+      var node = document.createElement("a");
+      node.className = "dot";
+      node.href = "/hotel/"+chain+"/"+hotel;
+      node.title = chain+ " - "+ hotel +" @ location: ("+i+", "+j+")";
+      var i_ = parseInt(i) * .01; 
+      var j_ = parseInt(j) * .01;
+      node.style.top = parseInt(i_ * height).toString()+"px";
+      node.style.left = parseInt(j_ * width).toString()+"px";
+      map.appendChild(node);
+    }
+  }
+
+
+  function removeDots(){
+    let dots = document.querySelectorAll(".dot")
+    for(var dot of dots){
+      dot.remove();
+    }
+  }
+
+  function searchQuery(){
+    var http = new XMLHttpRequest();
+    var url = '/search';
+    var params = buildQuery();
+    http.open('POST', url, true);
+
+    //Send the proper header information along with the request
+    http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+    http.onreadystatechange = function() {//Call a function when the state changes.
+        if(http.readyState == 4 && http.status == 200) {
+            alert(http.responseText);
+        }
+    }
+    http.send(params);                
+  }
+  
+  function getAllLocations(){
+    const Http = new XMLHttpRequest();
+    const url='/getAllLocations';
+    Http.open("GET", url);
+    Http.send();
+
+    Http.onreadystatechange = (e) => {
+        var text = Http.responseText;
+        console.log(text);
+        console.log(JSON.parse(text));
+        data = JSON.parse(text);
+        //for testing the scaling
+        // data.push([0,0,0,0]);
+        // data.push([100,100,100,100]);
+        renderMap(data)
+    }
+}
+
+</script>
+
+    </div>
+  
+</body></html>
