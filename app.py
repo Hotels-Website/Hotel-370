@@ -21,15 +21,17 @@ def tiara():
 
 @app.route("/Details")
 def details():
-    return render_template("Details.html")
+    hotels = select_all_hotels()
+    return render_template("Details.html", hotels=hotels)
 
 @app.route("/ReservationDetails")
 def reservationdetails():
+    hotels = select_all_hotels()
     if "user" in session:
         username = session["userid"]
         data = select_reservations_by_custid_res(username)
         return render_template("ReservationDetails.html", reservations=data)
-    return render_template("Details.html")
+    return render_template("Details.html", hotels=hotels)
 
 @app.route("/welcome")
 def welcome():
@@ -49,15 +51,17 @@ def search():
 
 @app.route("/AccountDetails")
 def accountdetails():
+    hotels = select_all_hotels()
     if "user" in session:
         username = session["user"]
         data = select_user_id_by_name_all(username)
-        return render_template("AccountDetails.html", name=data)
-    return render_template("login.html")
+        return render_template("AccountDetails.html", name=data, hotels=hotels)
+    return render_template("login.html", hotels=hotels)
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    hotels = select_all_hotels()
     if "user" in session:
         return "user is currently logged in"
     if request.method == "POST":
@@ -69,29 +73,31 @@ def login():
             session["date"] = date.today()
             session["date_display"] = date.today().strftime("%D")
             return redirect(url_for("home"))
-    return render_template("login.html")
+    return render_template("login.html", hotels=hotels)
     
 
 @app.route("/logout")
 def logout():
+    hotels = select_all_hotels()
     session.pop("user", None)
     session.pop("userid", None)
     session.pop("date", None)
     session.pop("date_display", None)
     session.pop("admin", None)
     session.pop("hotelid", None)
-    return render_template("home.html")
+    return render_template("home.html", hotels=hotels)
 
 
 @app.route("/register", methods=["GET","POST"])
 def register():
+    hotels = select_all_hotels()
     if request.method == "POST":
         fn = request.form["fn"]
         ln = request.form["ln"]
         un = request.form["un"]
         pw = request.form["pw"]
         insert_new_user(fn, ln, un, pw)
-    return render_template("login.html")
+    return render_template("login.html", hotels=hotels)
 
 
 #Loading Pages
@@ -104,12 +110,14 @@ def home():
 
 @app.route("/add_reservation", methods = ["GET", "POST"])
 def add_reservation():
+    data = select_all_hotels()
     if "user" in session:
-        return render_template("reservations.html")
-    return render_template("login.html") 
+        return render_template("reservations.html", hotels=data)
+    return render_template("login.html",hotels=data) 
 
 @app.route("/bookroom", methods=["GET","POST"])
 def bookroom():
+    data = select_all_hotels()
     if request.method == "POST":
         startdate = request.form["chckin"]
         enddate = request.form["chckout"]
@@ -118,28 +126,30 @@ def bookroom():
                 custid = select_user_id_by_name(session["user"])
                 resDetails = insert_new_reservation(startdate, enddate, session["roomid"], custid)
                 session.pop("roomid", None)
-                return render_template("confirm.html", d=resDetails)
-    return render_template("reservations.html")
+                return render_template("confirm.html", d=resDetails, hotels=data)
+    return render_template("reservations.html",hotels=data)
 
 @app.route("/cancel_reservation", methods = ["GET", "POST"])
 def cancel_reservation():
+    data = select_all_hotels()
     if "user" in session:
         custid = select_user_id_by_name(session["user"])
         if "roomid" in session:
             if check_reservation_by_customer(custid, session["roomid"]):
                 delete_reservation(custid, session["roomid"])
                 session.pop("roomid", None)
-                return render_template("ReservationDetails.html")
-            return render_template("home.html")
-        return render_template("login.html") 
+                return render_template("ReservationDetails.html",hotels=data)
+            return render_template("home.html",hotels=data)
+        return render_template("login.html",hotels=data) 
 
 
 @app.route("/reservations")
 def reservations():
+    hotels = select_all_hotels()
     if "user" in session:
         username = session["user"]
         data = select_reservations_by_custid(session["userid"])
-        return render_template("reservations.html", d=data)
+        return render_template("reservations.html", d=data, hotels=hotels)
     return redirect(url_for("home"))
 
 
@@ -158,7 +168,7 @@ def hotel_page(chain, hotelname=None):
                     chain=chain,
                     hotels=data,
                     chain_id = d[0],
-                    rooms = select_all_rooms_by_chain(d[0])
+                    rooms = select_all_available_rooms_by_chain(d[0])
                 )
         return redirect(url_for("home"), d=data)
     else:
@@ -167,13 +177,14 @@ def hotel_page(chain, hotelname=None):
 
 @app.route("/admin", methods=["GET", "POST"])
 def admin():
+    hotels = select_all_hotels()
     if request.method == "GET":
         if "user" in session:
             return "please logout as a user first"
         elif "admin" in session:    
-            return render_template("admin.html")    
+            return render_template("admin.html", hotels=hotels)    
         else:
-            return render_template("admin_login.html")
+            return render_template("admin_login.html", hotels=hotels)
     elif request.method == "POST":
         un = request.form["un"]
         pw = request.form["pw"]
@@ -182,9 +193,9 @@ def admin():
             session["date"] = date.today()
             session["date_display"] = date.today().strftime("%D")
             session["hotelid"] = hotel_id_from_admin(un)
-            return render_template("admin.html")
+            return render_template("admin.html", hotels=hotels)
         # return redirect(url_for("home"))
-    return render_template("admin_login.html")
+    return render_template("admin_login.html", hotels=hotels)
 
 @app.route("/register_admin", methods=["GET","POST"])
 def register_admin():
@@ -197,10 +208,11 @@ def register_admin():
             insert_new_hotel(hn)
             idn = hotel_id_from_name(hn)
             insert_new_admin(un,pw,idn)
-    return render_template("admin.html")
+    return render_template("admin.html", hotels=hotels)
 
 @app.route("/admin_add_loc", methods=["GET","POST"])
 def admin_add_loc():
+    hotels = select_all_hotels()
     if request.method == "POST":
         name = request.form["name"]
         icord = request.form["iloc"]
@@ -228,7 +240,7 @@ def admin_add_loc():
                 updated_insert_new_room(locid, "Expensive", expensiveRate)
                 x += 1
 
-    return render_template("admin.html")
+    return render_template("admin.html", hotels=hotels)
 
 
 # Returning Data
@@ -246,10 +258,11 @@ def getAllFuture():
 
 @app.route("/getAllReservations")
 def getAllReservations():
+    hotels = select_all_hotels()
     if "user" in session:
         custid = select_user_id_by_name(session["user"])
         return json.dumps(select_reservations_by_custid(custid))
-    return render_template("login.html")
+    return render_template("login.html", hotels=hotels)
 
 @app.route("/getAccountInfo")
 def getAccountInfo():
