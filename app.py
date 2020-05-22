@@ -40,6 +40,11 @@ def welcome():
 @app.route("/search", methods=["GET","POST"])
 def search():
     hotel2s = select_all_hotels()
+    if not 'resultLen' in session:
+        session['resultLen'] = 0
+    else:
+        session.pop("resultLen", None)
+
     if request.method == "POST":
         hotelname = request.form["hotelname"]
         hoteltype = request.form["hoteltype"]
@@ -58,7 +63,7 @@ def search():
             costmin = 201
             costmax = 1000000000000
         session['result'] = (search_hotel(hotelid, hoteltype, costmin, costmax))
-        #print(session['result'])
+        session['resultLen'] = len((session['result'])) + 10
         return render_template("home.html", hotels=hotel2s)
     return render_template("home.html", hotels=hotel2s)
 
