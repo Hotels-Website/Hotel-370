@@ -2,6 +2,7 @@
 1. download the following if you don't already have it:
   - ```python3```, this will install ```pip``` (python package manager) as well
   - git
+  - 
 2. once git is installed you can, from the command line (```cmd``` on windows, ```terminal``` on mac), cd into your preferred location and run ```git clone https://github.com/Hotels-Website/Hotel-370.git``` to download this repository into that folder.
 3. run ```pip install -r requirements.txt``` to install the dependencies
 4. to run the app, cd into the just cloned repository and type ```python app.py```
