@@ -39,11 +39,12 @@ def welcome():
 
 @app.route("/search", methods=["GET","POST"])
 def search():
-    hotels = select_all_hotels()
+    hotel2s = select_all_hotels()
     if request.method == "POST":
-        hotelid = hotel_id_from_name(request.form["hotels"])
+        hotelname = request.form["hotelname"]
         hoteltype = request.form["hoteltype"]
         cost = request.form["cost"]
+        hotelid = hotel_id_from_name(hotelname)
         if cost == "<50":
             costmin = 0
             costmax = 50
@@ -57,9 +58,9 @@ def search():
             costmin = 201
             costmax = 1000000000000
         session['result'] = (search_hotel(hotelid, hoteltype, costmin, costmax))
-        print(session['result'])
-        return render_template("home.html", hotels=hotels)
-    return render_template("home.html", hotels=hotels)
+        #print(session['result'])
+        return render_template("home.html", hotels=hotel2s)
+    return render_template("home.html", hotels=hotel2s)
 
 
 
