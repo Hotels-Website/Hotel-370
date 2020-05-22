@@ -184,7 +184,7 @@ def hotel_page(chain, hotelname=None):
                     chain=chain,
                     hotels=data,
                     chain_id = d[0],
-                    rooms = select_all_available_rooms_by_chain(d[0])
+                    rooms = select_all_rooms_by_chain(d[0])
                 )
         return redirect(url_for("home"), d=data)
     else:
